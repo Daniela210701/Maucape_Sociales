@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAUCAPESTUDIO — Fotografía & Cine Documental de Bodas</title>
+
+  <!-- TIPOGRAFÍA: SAIRA (textos) + SAIRA CONDENSED (títulos y etiquetas, igual que el logo) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600&family=Saira+Condensed:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Saira"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            editorial: ['"Saira Condensed"', 'sans-serif'],
+            mono: ['"Saira"', 'monospace']
+          },
+          colors: {
+            brandDark: '#0e0e10',
+            brandIvory: '#fcfcf9',
+            brandSurface: '#f5f3ec',
+            brandBorder: '#e8e5dc',
+            brandMuted: '#6c6962',
+            brandGold: '#c5a059',
+            brandCard: '#ffffff'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      font-family: 'Saira', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    }
+
+    ::selection {
+      background-color: #0e0e10;
+      color: #fcfcf9;
+    }
+
+    body {
+      background-color: #fcfcf9;
+      color: #0e0e10;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Grano de película química sutil */
+    .film-grain {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 99;
+      opacity: 0.024;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Scrollbar minimalista */
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #fcfcf9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #dcd8cc;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #0e0e10;
+    }
+
+    /* Transición suave entre fotos */
+    .carousel-slide-layer {
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* GOTA DE AGUA DINÁMICA CON DROP-SHADOW */
+    .dynamic-watermark {
+      filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.65));
+      transition: filter 0.2s ease;
+    }
+
+    .cursor-carousel-left { cursor: w-resize; }
+    .cursor-carousel-right { cursor: e-resize; }
+
+    .custom-input {
+      transition: all 0.2s ease;
+    }
+    .custom-input:focus {
+      border-color: #0e0e10;
+      box-shadow: 0 0 0 1px #0e0e10;
+      outline: none;
+    }
+
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+    /* ===== SISTEMA TIPOGRÁFICO (misma familia que el logo) ===== */
+    /* Títulos, frase principal, menú y etiquetas en Saira Condensed */
+    h1, h2, h3, blockquote, nav a, .uppercase, #slideCounterLabel {
+      font-family: 'Saira Condensed', 'Arial Narrow', sans-serif !important;
+    }
+    /* Frase principal: grande, ligera y elegante */
+    blockquote {
+      font-weight: 300 !important;
+      font-size: clamp(38px, 3.6vw, 60px) !important;
+      line-height: 1.05 !important;
+      letter-spacing: -0.005em !important;
+    }
+    /* Títulos de sección */
+    h2 {
+      font-weight: 400 !important;
+      font-size: clamp(30px, 2.6vw, 42px) !important;
+      line-height: 1.1 !important;
+      letter-spacing: 0 !important;
+    }
+    h3 { font-weight: 400 !important; font-size: 24px !important; letter-spacing: 0 !important; }
+    /* Etiquetas pequeñas y menú: mayúsculas espaciadas */
+    .uppercase { font-weight: 600 !important; letter-spacing: 0.22em !important; }
+    nav a { font-size: clamp(12px, 0.95vw, 15px) !important; letter-spacing: 0.18em !important; white-space: nowrap; }
+    /* Menú siempre en una sola línea */
+    #stickyNav > div { flex-wrap: nowrap !important; gap: clamp(6px, 1.2vw, 24px) !important; overflow-x: auto; scrollbar-width: none; }
+    #stickyNav > div::-webkit-scrollbar { display: none; }
+    #stickyNav > div { padding-left: 12px; }
+    @media (max-width: 1320px) {
+      nav a { font-size: 12px !important; letter-spacing: 0.1em !important; }
+      #stickyNav { padding-left: 20px !important; padding-right: 20px !important; }
+    }
+    @media (max-width: 1100px) {
+      #stickyNav > div > span.text-neutral-300 { display: none; }
+      #stickyNav > div { justify-content: space-between !important; gap: 8px !important; }
+      nav a { font-size: 11px !important; letter-spacing: 0.04em !important; }
+      .nav-dot { width: 5px; height: 5px; left: -8px; margin-top: -2.5px; }
+      #stickyNav > div { gap: 14px !important; }
+    }
+    .text-xs.uppercase { font-size: 13px !important; }
+    /* Párrafos */
+    p { font-weight: 300; }
+
+    /* ===== PORTAFOLIO ===== */
+    .pf-list { margin-top: -20px; }
+    .pf-item {
+      display: grid; grid-template-columns: 38% 1fr; gap: 28px;
+      padding: 28px 0; border-bottom: 1px solid #e8e5dc; cursor: pointer;
+    }
+    .pf-cover { position: relative; aspect-ratio: 3 / 4; overflow: hidden; background: #ece9e1; }
+    .pf-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(.16,1,.3,1), filter .6s ease; }
+    .pf-item:hover .pf-cover img { transform: scale(1.04); }
+    .pf-cover .pf-open {
+      position: absolute; left: 14px; bottom: 14px; background: rgba(252,252,249,.95); color: #0e0e10;
+      padding: 9px 14px; font-size: 12px; opacity: 0; transform: translateY(8px); transition: .5s cubic-bezier(.16,1,.3,1);
+    }
+    .pf-item:hover .pf-open, .pf-item:focus-visible .pf-open { opacity: 1; transform: none; }
+    .pf-body { display: grid; grid-template-columns: minmax(120px, 34%) 1fr; gap: 24px; align-content: start; }
+    .pf-date { display: block; font-size: 13px; color: #6c6962; margin-bottom: 8px; }
+    .pf-name { font-size: 26px !important; line-height: 1.1 !important; color: #0e0e10; margin: 0; transition: color .3s; }
+    .pf-item:hover .pf-name { color: #6c6962; }
+    .pf-place { display: block; font-size: 14px; color: #6c6962; margin-top: 8px; line-height: 1.5; }
+    .pf-text { font-size: 17px; line-height: 1.55; color: #2d2c29; font-weight: 300; margin: 0; }
+    .pf-count { display: block; margin-top: 18px; font-size: 12px; color: #0e0e10; }
+    .pf-bn .pf-cover img, .pf-lb.pf-bn .pf-lb-stage img, .pf-lb.pf-bn .pf-lb-thumbs img { filter: grayscale(1) contrast(1.05); }
+    .pf-item:focus-visible { outline: 1px solid #0e0e10; outline-offset: 6px; }
+    @media (max-width: 1279px) { .pf-body { grid-template-columns: 1fr; gap: 14px; } }
+    @media (max-width: 640px) { .pf-item { grid-template-columns: 1fr; } }
+
+    /* Galería emergente */
+    .pf-lb {
+      position: fixed; inset: 0; z-index: 120; background: #0c0c0d; color: #fcfcf9;
+      display: grid; grid-template-rows: auto 1fr auto; opacity: 0; visibility: hidden; transition: opacity .45s ease, visibility .45s;
+    }
+    .pf-lb.open { opacity: 1; visibility: visible; }
+    .pf-lb-top { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 22px clamp(18px, 3vw, 40px); border-bottom: 1px solid rgba(255,255,255,.1); }
+    .pf-lb-meta { display: block; font-size: 12px; color: rgba(252,252,249,.6); margin-bottom: 4px; }
+    .pf-lb-name { font-size: clamp(22px, 2vw, 30px) !important; color: #fcfcf9; margin: 0; }
+    .pf-lb-right { display: flex; align-items: center; gap: 22px; }
+    .pf-lb-count { font-size: 13px; color: rgba(252,252,249,.75); font-variant-numeric: tabular-nums; }
+    .pf-lb-close, .pf-lb-nav { width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(255,255,255,.22); display: grid; place-items: center; background: transparent; cursor: pointer; transition: background .3s; }
+    .pf-lb-close:hover, .pf-lb-nav:hover { background: rgba(255,255,255,.12); }
+    .pf-lb svg { width: 20px; height: 20px; stroke: #fcfcf9; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .pf-lb-stage { position: relative; display: flex; align-items: center; justify-content: center; padding: 20px 90px; min-height: 0; }
+    .pf-lb-stage img { max-width: 100%; max-height: 100%; object-fit: contain; opacity: 0; transform: scale(.985); transition: opacity .5s ease, transform .7s cubic-bezier(.16,1,.3,1); }
+    .pf-lb-stage img.show { opacity: 1; transform: none; }
+    .pf-lb-nav { position: absolute; top: 50%; transform: translateY(-50%); }
+    .pf-lb-nav.prev { left: clamp(14px, 2vw, 30px); }
+    .pf-lb-nav.next { right: clamp(14px, 2vw, 30px); }
+    .pf-lb-thumbs { display: flex; gap: 10px; justify-content: center; padding: 16px 20px 24px; overflow-x: auto; scrollbar-width: none; }
+    .pf-lb-thumbs button { flex: 0 0 auto; width: 64px; height: 64px; padding: 0; border: 0; cursor: pointer; opacity: .4; transition: opacity .3s; outline-offset: 3px; }
+    .pf-lb-thumbs button.on { opacity: 1; outline: 1px solid #fcfcf9; }
+    .pf-lb-thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    @media (max-width: 640px) {
+      .pf-lb-stage { padding: 10px 12px; }
+      .pf-lb-nav { top: auto; bottom: 16px; transform: none; background: rgba(0,0,0,.45); }
+      .pf-lb-thumbs button { width: 52px; height: 52px; }
+    }
+
+    /* ===== PAQUETES ===== */
+    .pk-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .pk-card {
+      position: relative; display: flex; flex-direction: column; background: #fff; border: 1px solid #e8e5dc;
+      padding: 32px 28px 28px; transition: transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s;
+    }
+    .pk-card:hover { transform: translateY(-4px); box-shadow: 0 22px 44px -28px rgba(14,14,16,.35); }
+    .pk-num { font-size: 12px !important; color: #6c6962; }
+    .pk-name { font-size: 34px !important; font-weight: 300 !important; line-height: 1 !important; color: #0e0e10; margin: 14px 0 10px; }
+    .pk-desc { font-size: 15px; line-height: 1.5; color: #6c6962; min-height: 45px; margin: 0; }
+    .pk-price { display: flex; align-items: baseline; gap: 8px; margin: 24px 0 6px; font-family: 'Saira Condensed', sans-serif !important; font-size: 40px; font-weight: 400; color: #0e0e10; line-height: 1; }
+    .pk-from, .pk-cur { font-size: 11px !important; color: #6c6962; }
+    .pk-from { align-self: center; margin-right: 2px; }
+    .pk-list { list-style: none; margin: 20px 0 28px; padding: 0; flex: 1; }
+    .pk-list li { position: relative; padding: 11px 0 11px 22px; border-top: 1px solid #eeebe3; font-size: 14.5px; line-height: 1.4; color: #2d2c29; font-weight: 300; }
+    .pk-list li::before { content: ""; position: absolute; left: 0; top: 19px; width: 10px; height: 1px; background: #0e0e10; }
+    .pk-btn {
+      display: flex; justify-content: center; align-items: center; padding: 15px 20px; border: 1px solid #0e0e10;
+      font-size: 13px !important; color: #0e0e10; transition: background .3s, color .3s;
+    }
+    .pk-btn:hover { background: #0e0e10; color: #fcfcf9; }
+    /* Paquete destacado */
+    .pk-featured { background: #0e0e10; border-color: #0e0e10; }
+    .pk-featured .pk-name, .pk-featured .pk-price { color: #fcfcf9; }
+    .pk-featured .pk-num, .pk-featured .pk-desc, .pk-featured .pk-from, .pk-featured .pk-cur { color: rgba(252,252,249,.6); }
+    .pk-featured .pk-list li { color: rgba(252,252,249,.85); border-color: rgba(255,255,255,.12); }
+    .pk-featured .pk-list li::before { background: #fcfcf9; }
+    .pk-featured .pk-btn { background: #fcfcf9; color: #0e0e10; border-color: #fcfcf9; }
+    .pk-featured .pk-btn:hover { background: transparent; color: #fcfcf9; }
+    .pk-badge { position: absolute; top: 18px; right: 18px; font-size: 10px !important; color: #fcfcf9; border: 1px solid rgba(252,252,249,.5); padding: 5px 10px; border-radius: 30px; }
+    .pk-note { font-size: 14px; line-height: 1.6; color: #6c6962; max-width: 640px; margin: 0; }
+    @media (max-width: 1180px) and (min-width: 1024px) { .pk-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) { .pk-grid { grid-template-columns: 1fr; } }
+
+    /* ===== COTIZADOR ===== */
+    .qt-wrap { display: grid; grid-template-columns: 1fr; gap: 32px; align-items: start; }
+    @media (min-width: 1800px) { .qt-wrap { grid-template-columns: minmax(0, 1.55fr) minmax(300px, 1fr); } .qt-sum { position: sticky; top: 90px; } .qt-bar { display: none !important; } }
+    .qt-step { padding-bottom: 34px; margin-bottom: 34px; border-bottom: 1px solid #e8e5dc; }
+    .qt-step:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+    .qt-step-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 20px; }
+    .qt-step-n { font-size: 12px !important; color: #6c6962; }
+    .qt-step-t { font-size: 26px !important; font-weight: 300 !important; color: #0e0e10; margin: 0; }
+
+    .qt-pkgs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .qt-pkg { position: relative; display: block; cursor: pointer; }
+    .qt-pkg input, .qt-extra input { position: absolute; opacity: 0; pointer-events: none; }
+    .qt-pkg-box { display: block; height: 100%; border: 1px solid #e8e5dc; background: #fcfcf9; padding: 18px 18px 16px; transition: border-color .25s, background .25s, color .25s; }
+    .qt-pkg:hover .qt-pkg-box { border-color: #0e0e10; }
+    .qt-pkg input:checked + .qt-pkg-box { background: #0e0e10; border-color: #0e0e10; color: #fcfcf9; }
+    .qt-pkg input:focus-visible + .qt-pkg-box, .qt-extra input:focus-visible + .qt-extra-box { outline: 1px solid #0e0e10; outline-offset: 3px; }
+    .qt-pkg-name { display: block; font-family: 'Saira Condensed', sans-serif !important; font-size: 22px; line-height: 1.1; }
+    .qt-pkg-desc { display: block; font-size: 13px; opacity: .65; margin-top: 4px; }
+    .qt-pkg-price { display: block; font-family: 'Saira Condensed', sans-serif !important; font-size: 20px; margin-top: 12px; }
+
+    .qt-cat { margin-bottom: 22px; }
+    .qt-cat:last-child { margin-bottom: 0; }
+    .qt-cat-t { display: block; font-size: 12px !important; color: #6c6962; margin-bottom: 10px; }
+    .qt-extras { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
+    .qt-extra { position: relative; display: block; cursor: pointer; }
+    .qt-extra-box { display: flex; gap: 12px; align-items: flex-start; height: 100%; border: 1px solid #e8e5dc; padding: 14px 14px 13px; transition: border-color .25s, background .25s; }
+    .qt-extra:hover .qt-extra-box { border-color: #0e0e10; }
+    .qt-tick { flex: 0 0 18px; height: 18px; border: 1px solid #0e0e10; display: grid; place-items: center; margin-top: 2px; transition: background .2s; }
+    .qt-tick svg { width: 12px; height: 12px; stroke: #fcfcf9; fill: none; stroke-width: 2.4; opacity: 0; }
+    .qt-extra input:checked + .qt-extra-box { border-color: #0e0e10; background: #f5f3ec; }
+    .qt-extra input:checked + .qt-extra-box .qt-tick { background: #0e0e10; }
+    .qt-extra input:checked + .qt-extra-box .qt-tick svg { opacity: 1; }
+    .qt-extra-txt { flex: 1; min-width: 0; }
+    .qt-extra-name { display: block; font-size: 15px; color: #0e0e10; line-height: 1.3; }
+    .qt-extra-info { display: block; font-size: 12.5px; color: #6c6962; margin-top: 3px; line-height: 1.35; }
+    .qt-extra-price { font-family: 'Saira Condensed', sans-serif !important; font-size: 17px; color: #0e0e10; white-space: nowrap; }
+    .qt-extra.incl { cursor: default; }
+    .qt-extra.incl .qt-extra-box { background: #f5f3ec; border-style: dashed; }
+    .qt-extra.incl .qt-tick { background: #0e0e10; }
+    .qt-extra.incl .qt-tick svg { opacity: 1; }
+    .qt-extra.incl .qt-extra-price { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #6c6962; }
+    .qt-qty { display: flex; align-items: center; gap: 0; margin-top: 8px; }
+    .qt-qty button { flex: 0 0 30px; width: 30px; height: 30px; padding: 0; border: 1px solid #d9d5ca; background: #fff; font-size: 16px; line-height: 1; color: #0e0e10; cursor: pointer; }
+    .qt-qty button:hover { border-color: #0e0e10; }
+    .qt-qty span { min-width: 70px; flex: 0 0 auto; text-align: center; font-size: 14px; font-variant-numeric: tabular-nums; }
+
+    .qt-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .qt-field span { display: block; font-size: 11px !important; color: #6c6962; margin-bottom: 6px; }
+    .qt-field input { width: 100%; border: 1px solid #e8e5dc; background: #fcfcf9; padding: 12px 14px; font-size: 15px; color: #0e0e10; }
+    .qt-check { display: flex; gap: 10px; align-items: flex-start; margin-top: 16px; font-size: 14px; color: #2d2c29; cursor: pointer; }
+    .qt-check input { margin-top: 3px; accent-color: #0e0e10; }
+
+    .qt-sum { background: #0e0e10; color: #fcfcf9; padding: 30px 28px; }
+    .qt-sum-k { font-size: 11px !important; color: rgba(252,252,249,.6); }
+    .qt-sum-pkg { font-family: 'Saira Condensed', sans-serif !important; font-size: 30px; font-weight: 300; margin: 8px 0 18px; line-height: 1.1; }
+    .qt-sum-lines { list-style: none; margin: 0 0 18px; padding: 0; max-height: 320px; overflow: auto; }
+    .qt-sum-lines li { display: flex; justify-content: space-between; gap: 14px; padding: 9px 0; border-top: 1px solid rgba(255,255,255,.1); font-size: 14px; color: rgba(252,252,249,.85); font-weight: 300; }
+    .qt-sum-lines li b { font-weight: 400; white-space: nowrap; }
+    .qt-sum-total { display: flex; justify-content: space-between; align-items: baseline; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.35); }
+    .qt-sum-total span { font-size: 11px !important; color: rgba(252,252,249,.6); }
+    .qt-sum-total strong { font-family: 'Saira Condensed', sans-serif !important; font-size: 44px; font-weight: 400; line-height: 1; }
+    .qt-sum-dep { display: flex; justify-content: space-between; margin-top: 10px; font-size: 13px; color: rgba(252,252,249,.7); }
+    .qt-sum-btn { display: flex; justify-content: center; margin-top: 24px; padding: 15px; background: #fcfcf9; color: #0e0e10; font-size: 12px !important; border: 1px solid #fcfcf9; transition: .3s; text-align: center; }
+    .qt-sum-btn:hover { background: transparent; color: #fcfcf9; }
+    .qt-sum-reset { width: 100%; margin-top: 10px; padding: 11px; background: transparent; border: 1px solid rgba(255,255,255,.2); color: rgba(252,252,249,.75); font-size: 11px !important; cursor: pointer; }
+    .qt-sum-reset:hover { border-color: #fcfcf9; color: #fcfcf9; }
+    .qt-sum-note { font-size: 12px; line-height: 1.5; color: rgba(252,252,249,.5); margin: 16px 0 0; }
+    @media (max-width: 640px) { .qt-pkgs, .qt-extras, .qt-fields { grid-template-columns: 1fr; } }
+    /* Barra flotante con el total (mientras el resumen no se ve) */
+    .qt-bar {
+      position: sticky; bottom: 16px; z-index: 30; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      background: #0e0e10; color: #fcfcf9; padding: 14px 18px 14px 22px; box-shadow: 0 18px 40px -18px rgba(0,0,0,.5);
+      transition: opacity .3s, transform .3s;
+    }
+    .qt-bar.hide { opacity: 0; transform: translateY(12px); pointer-events: none; }
+    .qt-bar span { font-size: 11px !important; color: rgba(252,252,249,.6); display: block; }
+    .qt-bar strong { font-family: 'Saira Condensed', sans-serif !important; font-size: 28px; font-weight: 400; line-height: 1; }
+    .qt-bar a { font-size: 11px !important; border: 1px solid rgba(252,252,249,.5); padding: 10px 14px; color: #fcfcf9; white-space: nowrap; }
+    .qt-bar a:hover { background: #fcfcf9; color: #0e0e10; }
+
+    /* ===== CONTACTO ===== */
+    .ct-k { display: block; font-size: 12px !important; color: #6c6962; margin-bottom: 12px; }
+    .ct-hint { display: block; font-size: 13px; color: #6c6962; margin-top: 8px; }
+    .ct-hero { display: grid; grid-template-columns: 1fr; gap: 28px; }
+    @media (min-width: 1400px) { .ct-hero { grid-template-columns: 1.1fr 1fr; align-items: end; } }
+    .ct-lead { font-family: 'Saira Condensed', sans-serif !important; font-weight: 300; font-size: clamp(26px, 2.1vw, 34px); line-height: 1.15; color: #0e0e10; margin: 0; }
+    .ct-avail { background: #fff; border: 1px solid #e8e5dc; padding: 20px 20px 18px; }
+    .ct-avail-row { display: flex; gap: 10px; }
+    .ct-avail-row input { flex: 1; min-width: 0; border: 1px solid #e8e5dc; background: #fcfcf9; padding: 12px 14px; font-size: 15px; color: #0e0e10; }
+    .ct-btn-dark, .ct-btn-line { display: inline-flex; align-items: center; justify-content: center; padding: 14px 22px; font-size: 12px !important; border: 1px solid #0e0e10; cursor: pointer; transition: background .3s, color .3s; white-space: nowrap; }
+    .ct-btn-dark { background: #0e0e10; color: #fcfcf9; }
+    .ct-btn-dark:hover { background: transparent; color: #0e0e10; }
+    .ct-btn-line { background: transparent; color: #0e0e10; }
+    .ct-btn-line:hover { background: #0e0e10; color: #fcfcf9; }
+
+    .ct-channels { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+    .ct-ch { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid #e8e5dc; padding: 16px 18px; transition: border-color .3s, transform .4s cubic-bezier(.16,1,.3,1); }
+    .ct-ch:hover { border-color: #0e0e10; transform: translateY(-2px); }
+    .ct-ch-ic { flex: 0 0 40px; height: 40px; border-radius: 50%; border: 1px solid #e8e5dc; display: grid; place-items: center; transition: background .3s, border-color .3s; }
+    .ct-ch-ic svg { width: 18px; height: 18px; fill: #0e0e10; transition: fill .3s; }
+    .ct-ch:hover .ct-ch-ic { background: #0e0e10; border-color: #0e0e10; }
+    .ct-ch:hover .ct-ch-ic svg { fill: #fcfcf9; }
+    .ct-ch-txt { flex: 1; min-width: 0; }
+    .ct-ch-name { display: block; font-size: 11px !important; color: #6c6962; }
+    .ct-ch-val { display: block; font-size: 15px; color: #0e0e10; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ct-ch-arrow { font-size: 18px; color: #0e0e10; transition: transform .3s; }
+    .ct-ch:hover .ct-ch-arrow { transform: translateX(3px); }
+
+    .ct-form { background: #fff; border: 1px solid #e8e5dc; padding: clamp(22px, 2.4vw, 34px); }
+    .ct-form-head { margin-bottom: 22px; }
+    .ct-form-t { font-size: 26px !important; font-weight: 300 !important; color: #0e0e10; margin: 0; }
+    .ct-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .ct-full { grid-column: 1 / -1; }
+    .ct-fields select, .ct-fields textarea { width: 100%; border: 1px solid #e8e5dc; background: #fcfcf9; padding: 12px 14px; font-size: 15px; color: #0e0e10; resize: vertical; }
+    .ct-form-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+    .ct-error { color: #9b2c2c; font-size: 13px; margin: 12px 0 0; min-height: 1em; }
+    .ct-field-err { border-color: #9b2c2c !important; }
+
+    .ct-info { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid #e8e5dc; border-bottom: 1px solid #e8e5dc; }
+    .ct-info > div { padding: 22px 18px 20px 0; }
+    .ct-info > div + div { padding-left: 18px; border-left: 1px solid #e8e5dc; }
+    .ct-info .ct-k { margin-bottom: 6px; }
+    .ct-info p { font-size: 15px; line-height: 1.45; color: #0e0e10; font-weight: 300; margin: 0; }
+
+    .ct-faq details { border-top: 1px solid #e8e5dc; }
+    .ct-faq details:last-child { border-bottom: 1px solid #e8e5dc; }
+    .ct-faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 0; font-family: 'Saira Condensed', sans-serif !important; font-size: 20px; color: #0e0e10; }
+    .ct-faq summary::-webkit-details-marker { display: none; }
+    .ct-faq summary::after { content: "+"; font-family: 'Saira', sans-serif !important; font-size: 22px; font-weight: 300; transition: transform .3s; }
+    .ct-faq details[open] summary::after { transform: rotate(45deg); }
+    .ct-faq p { font-size: 15px; line-height: 1.6; color: #2d2c29; font-weight: 300; margin: 0 0 20px; max-width: 620px; }
+
+    .ct-fab { position: fixed; right: 22px; bottom: 22px; z-index: 60; width: 56px; height: 56px; border-radius: 50%; background: #0e0e10; display: grid; place-items: center; box-shadow: 0 12px 30px -10px rgba(0,0,0,.5); transition: transform .3s, opacity .4s; }
+    .ct-fab:hover { transform: scale(1.06); }
+    .ct-fab svg { width: 26px; height: 26px; fill: #fcfcf9; }
+    .ct-fab.hide { opacity: 0; pointer-events: none; transform: translateY(10px); }
+    @media (max-width: 640px) {
+      .ct-fields, .ct-info { grid-template-columns: 1fr; }
+      .ct-info > div + div { padding-left: 0; border-left: 0; border-top: 1px solid #e8e5dc; }
+      .ct-avail-row { flex-direction: column; }
+    }
+
+    /* ===== MENÚ: todos del mismo color; el activo en negro con punto ===== */
+    .nav-link { position: relative; display: flex; align-items: center; color: #6c6962; font-weight: 600 !important; transition: color .3s; }
+    .nav-link:hover { color: #0e0e10; }
+    .nav-dot { position: absolute; left: -11px; top: 50%; margin-top: -3px; width: 6px; height: 6px; border-radius: 50%; background: #0e0e10; transform: scale(0); transition: transform .3s; }
+    .nav-link.active { color: #0e0e10; font-weight: 700 !important; }
+    .nav-link.active .nav-dot { transform: scale(1); }
+
+    /* ===== AJUSTES PARA PANTALLAS MEDIANAS Y CELULAR ===== */
+    /* Panel derecho angosto (laptop pequeña / tablet): todo en una columna */
+    @media (max-width: 1180px) { .pk-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 1100px) {
+      .ct-info { grid-template-columns: 1fr; }
+      .ct-info > div + div { padding-left: 0; border-left: 0; border-top: 1px solid #e8e5dc; }
+      .qt-fields, .ct-fields { grid-template-columns: 1fr; }
+    }
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .pf-item { grid-template-columns: 1fr; gap: 18px; }
+      .pf-cover { aspect-ratio: 4 / 3; }
+      blockquote { font-size: 34px !important; }
+      #photoWatermarkContainer { bottom: 118px !important; }
+      #watermarkCustomImg, #watermarkDefaultSvg { height: 110px !important; }
+    }
+    @media (min-width: 768px) and (max-width: 820px) { #stickyNav > div { gap: 10px !important; } nav a { font-size: 10.5px !important; } }
+    /* Celular */
+    @media (max-width: 767px) {
+      #stickyNav { padding: 14px 16px !important; }
+      nav a { font-size: 11px !important; letter-spacing: 0.04em !important; }
+      #stickyNav > div { gap: 12px !important; justify-content: flex-start !important; }
+      .nav-dot { left: -7px !important; }
+      section[id] { padding-left: 20px !important; padding-right: 20px !important; }
+      #inicio { padding-top: 32px !important; }
+      .mc-logo { max-width: 200px; margin: 0 auto; }
+      blockquote { font-size: 32px !important; line-height: 1.08 !important; }
+      h2 { font-size: 30px !important; }
+      .pf-item { grid-template-columns: 1fr; gap: 16px; padding: 22px 0; }
+      .pf-cover { aspect-ratio: 4 / 3; }
+      .pf-cover .pf-open { opacity: 1; transform: none; }
+      .pk-card { padding: 26px 22px 22px; }
+      .pk-name { font-size: 30px !important; }
+      .qt-step-head { flex-direction: column; gap: 4px; }
+      .qt-sum { padding: 26px 20px; }
+      .qt-sum-total strong { font-size: 38px; }
+      .qt-bar { bottom: 10px; padding: 12px 14px 12px 16px; }
+      .ct-lead { font-size: 26px; }
+      .ct-form-actions > * { flex: 1 1 100%; }
+      .ct-fab { right: 16px; bottom: 16px; width: 52px; height: 52px; }
+      #photoWatermarkContainer { bottom: 118px !important; }
+      #watermarkCustomImg, #watermarkDefaultSvg { height: 100px !important; }
+      .flex.items-center.justify-between.border-b { flex-wrap: wrap; gap: 6px; }
+    }
+    @media (max-width: 380px) {
+      nav a { font-size: 10px !important; letter-spacing: 0.04em !important; }
+      .qt-pkgs { grid-template-columns: 1fr; }
+    }
+
+    /* ===== LOGO INTERACTIVO ===== */
+    .mc-logo{width:100%;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+    .mc-logo svg{width:100%;height:auto;display:block;overflow:visible}
+    .mc-logo path{fill:none;stroke:#0e0e10;stroke-width:2.6;stroke-linecap:butt;stroke-linejoin:round}
+    .mc-logo .mc-word{font-family:'Saira Condensed','Arial Narrow',sans-serif !important;font-weight:700;font-size:22px;fill:#0e0e10;opacity:0;transform:translateY(4px);transform-box:fill-box;transition:opacity .8s ease,transform .8s ease}
+    .mc-logo.is-logo .mc-word{opacity:1;transform:none;transition-delay:2s} /* aparece cuando la M ya terminó de formarse */
+    .mc-logo .mc-lines{transform-origin:120px 124px;transform-box:view-box}
+    .mc-logo.is-heart.ready .mc-lines{animation:mcBeat 1.6s ease-in-out infinite}
+    @keyframes mcBeat{0%,100%{transform:scale(1)}14%{transform:scale(1.035)}28%{transform:scale(1)}42%{transform:scale(1.02)}56%{transform:scale(1)}}
+  </style>
+</head>
+
+<body class="min-h-screen bg-brandIvory text-brandDark relative antialiased">
+  <div class="film-grain" aria-hidden="true"></div>
+
+  <div class="min-h-screen flex flex-col md:flex-row w-full relative">
+
+    <!-- ======================================================== -->
+    <!-- MITAD IZQUIERDA: CARRUSEL EDITORIAL STICKY 50VW          -->
+    <!-- ======================================================== -->
+    <aside class="w-full md:w-1/2 h-[64vh] md:h-screen md:sticky md:top-0 relative bg-neutral-950 overflow-hidden select-none border-b md:border-b-0 md:border-r border-brandBorder z-20">
+      
+      <!-- Contenedor interactivo de fotografías -->
+      <div id="carouselContainer" class="w-full h-full relative cursor-pointer" onclick="handleCarouselClick(event)">
+        <img id="activeCarouselImg" 
+             src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2000&q=85" 
+             alt="Fotografía de Bodas MAUCAPESTUDIO" 
+             class="carousel-slide-layer absolute inset-0 w-full h-full object-cover object-center scale-100"
+             onerror="this.src='https://placehold.co/1400x1800/181818/ffffff?text=MAUCAPESTUDIO'">
+
+        <img id="bufferCarouselImg" 
+             src="" 
+             alt="Buffer" 
+             class="carousel-slide-layer absolute inset-0 w-full h-full object-cover object-center opacity-0 pointer-events-none scale-100">
+
+        <!-- Gradiente cinemático inferior -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none"></div>
+
+        <!-- Zonas táctiles laterales -->
+        <div class="absolute inset-y-0 left-0 w-1/2 cursor-carousel-left" title="Click para anterior"></div>
+        <div class="absolute inset-y-0 right-0 w-1/2 cursor-carousel-right" title="Click para siguiente"></div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- GOTA DE AGUA FIJA CON TUS NUEVOS PARÁMETROS CENTRADOS    -->
+      <!-- ======================================================== -->
+      <div id="photoWatermarkContainer" 
+           class="absolute z-30 select-none pointer-events-auto"
+           style="bottom: 81px; left: 50%; transform: translateX(-50%);">
+        <div id="watermarkGlyphWrap" class="dynamic-watermark flex items-center justify-center" style="opacity: 0.39;">
+          
+          <!-- Imagen interna oficial -->
+          <img id="watermarkCustomImg" 
+               src="img_gota_de_agua.png" 
+               alt="MAUCAPESTUDIO" 
+               class="w-auto object-contain filter drop-shadow-xl"
+               style="height: 164px;"
+               onerror="this.style.display='none'; document.getElementById('watermarkDefaultSvg').classList.remove('hidden');">
+
+          <!-- Fallback vectorial sincronizado en altura -->
+          <svg id="watermarkDefaultSvg" 
+               class="hidden w-auto text-white fill-none stroke-current" 
+               style="height: 164px;"
+               viewBox="0 0 220 270">
+            <g stroke="currentColor" stroke-width="5" fill="none">
+              <path d="M 18 250 V 90 A 44 44 0 0 1 106 90 V 250" />
+              <path d="M 25 250 V 90 A 37 37 0 0 1 99 90 V 250" />
+              <path d="M 32 250 V 90 A 30 30 0 0 1 92 90 V 250" />
+              <path d="M 39 250 V 90 A 23 23 0 0 1 85 90 V 250" />
+              <path d="M 46 250 V 90 A 16 16 0 0 1 78 90 V 250" />
+              <path d="M 114 250 V 90 A 44 44 0 0 1 202 90 V 250" />
+              <path d="M 121 250 V 90 A 37 37 0 0 1 195 90 V 250" />
+              <path d="M 128 250 V 90 A 30 30 0 0 1 188 90 V 250" />
+              <path d="M 135 250 V 90 A 23 23 0 0 1 181 90 V 250" />
+              <path d="M 142 250 V 90 A 16 16 0 0 1 174 90 V 250" />
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- CONTROLES INFERIORES ABSOLUTAMENTE CENTRADOS             -->
+      <!-- ======================================================== -->
+      <footer class="absolute bottom-6 inset-x-0 flex flex-col items-center justify-center gap-2.5 px-6 z-20 pointer-events-none">
+        
+        <!-- Título de la boda 100% centrado con flex -->
+        <div class="w-full flex items-center justify-center text-center pointer-events-auto">
+          <div class="inline-flex items-center justify-center gap-2 text-white text-xs sm:text-[13px] text-center max-w-sm sm:max-w-md truncate drop-shadow">
+            <span class="w-1.5 h-1.5 rounded-full bg-white opacity-85 animate-pulse flex-shrink-0"></span>
+            <span id="slideTitleLabel" class="font-light tracking-wide text-white/95 truncate">
+              Sofía & Nicolás — Hacienda San Antonio, Colima
+            </span>
+          </div>
+        </div>
+
+        <!-- Cápsula centrada: ← , ⏸/▶ , → y 01 / 06 -->
+        <div class="flex items-center justify-center gap-3 bg-black/65 border border-white/20 px-4 py-1.5 rounded-full shadow-2xl backdrop-blur-md pointer-events-auto transition-transform hover:scale-[1.02]">
+          
+          <button type="button" 
+                  onclick="prevSlide()" 
+                  class="p-1.5 rounded-full hover:bg-white/20 text-white transition-all active:scale-90 flex items-center justify-center cursor-pointer" 
+                  title="Foto anterior (←)">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 19l-7-7 7-7"/>
+            </svg>
+          </button>
+
+          <button type="button" 
+                  id="carouselPlayPauseBtn" 
+                  onclick="toggleCarouselPlayPause()" 
+                  class="p-1.5 rounded-full hover:bg-white/20 text-white transition-all active:scale-90 flex items-center justify-center cursor-pointer" 
+                  title="Pausar / Reanudar (Espacio)">
+            <svg id="iconPause" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+            </svg>
+            <svg id="iconPlay" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </button>
+
+          <button type="button" 
+                  onclick="nextSlide()" 
+                  class="p-1.5 rounded-full hover:bg-white/20 text-white transition-all active:scale-90 flex items-center justify-center cursor-pointer" 
+                  title="Foto siguiente (→)">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
+
+          <div class="w-px h-3.5 bg-white/25 mx-0.5"></div>
+
+          <!-- Contador centrado -->
+          <div class="text-xs font-semibold tracking-widest text-white/90 tabular-nums px-1">
+            <span id="slideCounterLabel">01 / 06</span>
+          </div>
+
+        </div>
+
+        <!-- Barra lineal de progreso continuo centrada -->
+        <div class="w-48 sm:w-60 bg-white/20 h-[2px] overflow-hidden rounded-full pointer-events-auto">
+          <div id="carouselProgressBar" class="h-full bg-white w-0 transition-all duration-100 ease-linear"></div>
+        </div>
+
+      </footer>
+    </aside>
+
+    <!-- ======================================================== -->
+    <!-- MITAD DERECHA: PANE SCROLLABLE CON LAS 5 SECCIONES       -->
+    <!-- ======================================================== -->
+    <div class="w-full md:w-1/2 min-w-0 min-h-screen bg-brandIvory flex flex-col justify-between relative">
+
+      <!-- ======================================================== -->
+      <!-- BARRA SUPERIOR PERSISTENTE                              -->
+      <!-- ======================================================== -->
+      <nav id="stickyNav" class="sticky top-0 z-40 bg-brandIvory/95 backdrop-blur-md border-b border-brandBorder px-6 sm:px-10 lg:px-12 py-4 shadow-[0_2px_12px_rgba(0,0,0,0.02)] transition-all">
+        <div class="flex items-center justify-start flex-wrap gap-4 sm:gap-6 uppercase tracking-[0.16em] font-semibold text-xs sm:text-sm text-brandMuted">
+          <a href="#inicio" class="nav-link active"><span class="nav-dot"></span><span>Inicio</span></a>
+          <span class="text-neutral-300">•</span>
+          <a href="#portafolio" class="nav-link"><span class="nav-dot"></span><span>Portafolio</span></a>
+          <span class="text-neutral-300">•</span>
+          <a href="#paquetes" class="nav-link"><span class="nav-dot"></span><span>Paquetes</span></a>
+          <span class="text-neutral-300">•</span>
+          <a href="#cotizador" class="nav-link"><span class="nav-dot"></span><span>Cotizador</span></a>
+          <span class="text-neutral-300">•</span>
+          <a href="#contacto" class="nav-link"><span class="nav-dot"></span><span>Contacto</span></a>
+        </div>
+      </nav>
+
+      <!-- ======================================================== -->
+      <!-- 1. SECCIÓN: INICIO                                       -->
+      <!-- ======================================================== -->
+      <section id="inicio" class="px-6 sm:px-10 lg:px-12 pt-12 pb-16 space-y-12 border-b border-brandBorder scroll-mt-20">
+        
+        <div class="w-full relative py-4 flex flex-col items-center justify-center select-none">
+          <div class="w-full max-w-[240px] sm:max-w-[280px] mx-auto flex justify-center items-center">
+
+            <!-- LOGO INTERACTIVO: corazón ↔ M de líneas -->
+            <div class="mc-logo" id="mcLogo" role="img" aria-label="MAUCAPESTUDIO">
+              <svg viewBox="0 0 240 240">
+                <g class="mc-lines"></g>
+                <text class="mc-word" x="43.7" y="205" textLength="152.6" lengthAdjust="spacingAndGlyphs">MAUCAPESTUDIO</text>
+              </svg>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="space-y-6 pt-4 border-t border-brandBorder text-left">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-brandDark"></span>
+            <span class="text-xs font-bold uppercase tracking-[0.2em] text-brandMuted">Fotografía y Video</span>
+          </div>
+
+          <blockquote class="text-3xl sm:text-4xl lg:text-[42px] font-extralight text-brandDark leading-[1.2] tracking-tight">
+            “Hay miradas que duran un segundo y merecen durar toda la vida.”
+          </blockquote>
+
+          <p class="text-base sm:text-lg text-neutral-700 leading-relaxed font-light max-w-2xl">
+            Sin poses ni guiones: acompañamos su día en silencio para guardar lo que de verdad sienten. Porque algún día estas fotos serán lo más valioso que tengan, y merecen contar su historia tal como la vivieron.
+          </p>
+
+          <div class="flex items-center gap-3 pt-2">
+            <span class="h-px w-10 bg-brandDark"></span>
+            <span class="text-xs font-bold uppercase tracking-[0.2em] text-brandDark">El amor no se posa. Se vive.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. SECCIÓN: PORTAFOLIO -->
+      <section id="portafolio" class="px-6 sm:px-10 lg:px-12 py-16 space-y-12 border-b border-brandBorder scroll-mt-20">
+        <div class="flex items-center justify-between border-b border-brandBorder pb-3">
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-light text-brandDark tracking-tight">Portafolio</h2>
+          </div>
+          <span class="text-xs font-bold uppercase tracking-[0.2em] text-brandMuted">2024 — 2026</span>
+        </div>
+        <!-- Lista de bodas: se llena desde el script (PORTAFOLIO) -->
+        <div id="portfolioList" class="pf-list"></div>
+      </section>
+
+      <!-- 3. SECCIÓN: PAQUETES -->
+      <section id="paquetes" class="px-6 sm:px-10 lg:px-12 py-16 space-y-10 border-b border-brandBorder bg-brandSurface scroll-mt-20">
+        <div class="flex items-center justify-between border-b border-brandBorder pb-3">
+          <h2 class="text-2xl sm:text-3xl font-light text-brandDark tracking-tight">Paquetes de Boda</h2>
+          <span class="text-xs font-bold uppercase tracking-[0.2em] text-brandMuted">Precios en MXN</span>
+        </div>
+
+        <div class="pk-grid">
+          <article class="pk-card">
+            <span class="pk-num uppercase">01 · Fotografía</span>
+            <h3 class="pk-name">Esencial</h3>
+            <p class="pk-desc">Lo esencial de su día, contado con honestidad.</p>
+            <div class="pk-price"><span class="pk-from uppercase">Desde</span>$12,900<span class="pk-cur">MXN</span></div>
+            <ul class="pk-list">
+              <li>6 horas de cobertura</li>
+              <li>1 fotógrafo</li>
+              <li>Ceremonia y recepción</li>
+              <li>350+ fotografías editadas</li>
+              <li>Galería digital privada</li>
+            </ul>
+            <a href="#cotizador" class="pk-btn uppercase" data-pkg="esencial">Contratar</a>
+          </article>
+
+          <article class="pk-card">
+            <span class="pk-num uppercase">02 · Foto + Video</span>
+            <h3 class="pk-name">Clásico</h3>
+            <p class="pk-desc">Su boda en fotos y en movimiento.</p>
+            <div class="pk-price"><span class="pk-from uppercase">Desde</span>$19,900<span class="pk-cur">MXN</span></div>
+            <ul class="pk-list">
+              <li>8 horas de cobertura</li>
+              <li>1 fotógrafo + 1 videógrafo</li>
+              <li>Sesión preboda (1 hora)</li>
+              <li>500+ fotografías editadas</li>
+              <li>Video resumen de 5 a 8 min</li>
+              <li>Photo book 10 × 10"</li>
+            </ul>
+            <a href="#cotizador" class="pk-btn uppercase" data-pkg="clásico">Contratar</a>
+          </article>
+
+          <article class="pk-card">
+            <span class="pk-num uppercase">03 · Foto + Cine</span>
+            <h3 class="pk-name">Signature</h3>
+            <p class="pk-desc">La experiencia completa, de los preparativos a la última canción.</p>
+            <div class="pk-price"><span class="pk-from uppercase">Desde</span>$28,900<span class="pk-cur">MXN</span></div>
+            <ul class="pk-list">
+              <li>10 horas de cobertura</li>
+              <li>2 fotógrafos + 1 videógrafo</li>
+              <li>Preparativos de novia y novio</li>
+              <li>Sesión preboda + sesión formal</li>
+              <li>Película cinematográfica de 10 a 15 min</li>
+              <li>Tomas con dron</li>
+              <li>Photo book 12 × 12"</li>
+            </ul>
+            <a href="#cotizador" class="pk-btn uppercase" data-pkg="signature">Contratar</a>
+          </article>
+
+          <article class="pk-card">
+            <span class="pk-num uppercase">04 · Todo incluido</span>
+            <h3 class="pk-name">Legado</h3>
+            <p class="pk-desc">Para quienes quieren guardarlo todo, para siempre.</p>
+            <div class="pk-price"><span class="pk-from uppercase">Desde</span>$42,000<span class="pk-cur">MXN</span></div>
+            <ul class="pk-list">
+              <li>Cobertura de todo el día</li>
+              <li>2 fotógrafos + 2 videógrafos</li>
+              <li>Save the date + preboda + trash the dress</li>
+              <li>Rollo 35 mm Kodak Portra</li>
+              <li>Película documental de 20 a 30 min</li>
+              <li>Avance de fotos en 72 horas</li>
+              <li>Álbum de lino 30 × 30" + réplica para papás</li>
+            </ul>
+            <a href="#cotizador" class="pk-btn uppercase" data-pkg="legado">Contratar</a>
+          </article>
+        </div>
+
+        <p class="pk-note">Todos los paquetes incluyen edición profesional y entrega digital en alta resolución. Bodas fuera de la ciudad: viáticos se cotizan aparte. ¿Buscas algo distinto? Arma tu paquete en el cotizador.</p>
+      </section>
+
+      <!-- 4. SECCIÓN: COTIZADOR -->
+      <section id="cotizador" class="px-6 sm:px-10 lg:px-12 py-16 space-y-10 border-b border-brandBorder bg-white scroll-mt-20">
+        <div class="flex items-center justify-between border-b border-brandBorder pb-3">
+          <h2 class="text-2xl sm:text-3xl font-light text-brandDark tracking-tight">Cotizador</h2>
+          <span class="text-xs font-bold uppercase tracking-[0.2em] text-brandMuted">Arma tu paquete</span>
+        </div>
+
+        <div class="qt-wrap">
+          <div class="qt-steps">
+
+            <!-- Paso 1: paquete -->
+            <div class="qt-step">
+              <div class="qt-step-head"><span class="qt-step-n uppercase">Paso 01</span><h3 class="qt-step-t">Elige tu paquete</h3></div>
+              <div class="qt-pkgs" id="qtPkgs"></div>
+            </div>
+
+            <!-- Paso 2: extras -->
+            <div class="qt-step">
+              <div class="qt-step-head"><span class="qt-step-n uppercase">Paso 02</span><h3 class="qt-step-t">Agrega servicios extra</h3></div>
+              <div id="qtExtras"></div>
+            </div>
+
+            <!-- Paso 3: datos -->
+            <div class="qt-step">
+              <div class="qt-step-head"><span class="qt-step-n uppercase">Paso 03</span><h3 class="qt-step-t">Tu boda</h3></div>
+              <div class="qt-fields">
+                <label class="qt-field"><span class="uppercase">Nombres</span><input id="qtNames" type="text" placeholder="Ej. Ana & Luis" class="custom-input"></label>
+                <label class="qt-field"><span class="uppercase">Fecha</span><input id="qtDate" type="date" class="custom-input"></label>
+                <label class="qt-field"><span class="uppercase">Ciudad o sede</span><input id="qtPlace" type="text" placeholder="Ej. Hacienda en Morelos" class="custom-input"></label>
+                <label class="qt-field"><span class="uppercase">Invitados</span><input id="qtGuests" type="number" min="0" placeholder="Ej. 150" class="custom-input"></label>
+              </div>
+              <label class="qt-check"><input type="checkbox" id="qtTravel"><span>La boda es fuera de mi ciudad (los viáticos se cotizan aparte)</span></label>
+            </div>
+          </div>
+
+          <!-- Resumen -->
+          <aside class="qt-sum" id="qtSummary" aria-live="polite">
+            <span class="qt-sum-k uppercase">Tu cotización</span>
+            <div class="qt-sum-pkg" id="qtSumPkg"></div>
+            <ul class="qt-sum-lines" id="qtSumLines"></ul>
+            <div class="qt-sum-total">
+              <span class="uppercase">Total estimado</span>
+              <strong id="qtTotal">$0</strong>
+            </div>
+            <div class="qt-sum-dep"><span>Aparta tu fecha con el 30%</span><b id="qtDeposit">$0</b></div>
+            <a id="qtSend" class="qt-sum-btn uppercase" target="_blank" rel="noopener">Enviar cotización por WhatsApp</a>
+            <button type="button" id="qtReset" class="qt-sum-reset uppercase">Reiniciar</button>
+            <p class="qt-sum-note">Precio de referencia en MXN. La cotización final se confirma según fecha, sede y disponibilidad.</p>
+          </aside>
+        </div>
+
+        <div class="qt-bar" id="qtBar">
+          <div><span class="uppercase">Total estimado</span><strong id="qtBarTotal">$0</strong></div>
+          <a href="#qtSummary" class="uppercase">Ver resumen ↓</a>
+        </div>
+      </section>
+
+      <!-- 5. SECCIÓN: CONTACTO -->
+      <section id="contacto" class="px-6 sm:px-10 lg:px-12 py-16 space-y-10 border-b border-brandBorder bg-brandSurface scroll-mt-20">
+        <div class="flex items-center justify-between border-b border-brandBorder pb-3">
+          <h2 class="text-2xl sm:text-3xl font-light text-brandDark tracking-tight">Contacto</h2>
+          <span class="text-xs font-bold uppercase tracking-[0.2em] text-brandMuted">Respuesta en menos de 24 h</span>
+        </div>
+
+        <!-- Intro + disponibilidad -->
+        <div class="ct-hero">
+          <p class="ct-lead">Cuéntennos de su boda. Nos encantará escuchar cómo la imaginan y ayudarles a guardarla para siempre.</p>
+          <div class="ct-avail">
+            <span class="ct-k uppercase">¿Su fecha sigue disponible?</span>
+            <div class="ct-avail-row">
+              <input type="date" id="ctAvailDate" class="custom-input" aria-label="Fecha de la boda">
+              <a id="ctAvailBtn" class="ct-btn-dark uppercase" target="_blank" rel="noopener">Consultar</a>
+            </div>
+            <span class="ct-hint">Aceptamos un número limitado de bodas por fecha.</span>
+          </div>
+        </div>
+
+        <!-- Canales -->
+        <div>
+          <span class="ct-k uppercase">Escríbannos directo</span>
+          <div class="ct-channels" id="ctChannels"></div>
+        </div>
+
+        <!-- Formulario -->
+        <form class="ct-form" id="ctForm" novalidate>
+          <div class="ct-form-head">
+            <h3 class="ct-form-t">Envíennos un mensaje</h3>
+            <span class="ct-hint">Les respondemos por WhatsApp o correo, como prefieran.</span>
+          </div>
+          <div class="ct-fields">
+            <label class="qt-field"><span class="uppercase">Nombres</span><input id="ctName" required placeholder="Ana & Luis" class="custom-input"></label>
+            <label class="qt-field"><span class="uppercase">Correo</span><input id="ctEmail" type="email" placeholder="correo@ejemplo.com" class="custom-input"></label>
+            <label class="qt-field"><span class="uppercase">Teléfono</span><input id="ctPhone" type="tel" placeholder="55 1234 5678" class="custom-input"></label>
+            <label class="qt-field"><span class="uppercase">Fecha de la boda</span><input id="ctDate" type="date" class="custom-input"></label>
+            <label class="qt-field ct-full"><span class="uppercase">¿Cómo se enteraron de nosotros?</span>
+              <select id="ctSource" class="custom-input"><option value="">Selecciona una opción</option><option>Instagram</option><option>Facebook</option><option>TikTok</option><option>Recomendación</option><option>Google</option><option>Otro</option></select>
+            </label>
+            <label class="qt-field ct-full"><span class="uppercase">Mensaje</span><textarea id="ctMsg" rows="4" placeholder="Cuéntennos de su boda: lugar, número de invitados, qué les gustaría…" class="custom-input"></textarea></label>
+          </div>
+          <div class="ct-form-actions">
+            <button type="submit" class="ct-btn-dark uppercase" data-via="wa">Enviar por WhatsApp</button>
+            <button type="submit" class="ct-btn-line uppercase" data-via="mail">Enviar por correo</button>
+          </div>
+          <p class="ct-error" id="ctError" role="alert"></p>
+        </form>
+
+        <!-- Datos útiles -->
+        <div class="ct-info">
+          <div><span class="ct-k uppercase">Horario</span><p>Lunes a sábado<br>10:00 a 19:00 h</p></div>
+          <div><span class="ct-k uppercase">Cobertura</span><p>Todo México y bodas destino</p></div>
+          <div><span class="ct-k uppercase">Citas</span><p>Presencial o por videollamada</p></div>
+        </div>
+
+        <!-- Preguntas frecuentes -->
+        <div>
+          <span class="ct-k uppercase">Preguntas frecuentes</span>
+          <div class="ct-faq">
+            <details><summary>¿Con cuánta anticipación debemos reservar?</summary><p>Lo ideal es de 8 a 12 meses antes, sobre todo en temporada alta (octubre a diciembre y marzo a mayo). Si su boda es pronto, escríbannos: a veces aún tenemos lugar.</p></details>
+            <details><summary>¿Cómo apartamos nuestra fecha?</summary><p>Con un anticipo del 30% y la firma del contrato. El resto se liquida antes del día de la boda.</p></details>
+            <details><summary>¿Cuándo nos entregan las fotos y el video?</summary><p>Las fotos en 4 a 6 semanas y el video en 8 a 10 semanas. Con el servicio de entrega express reciben un avance en 72 horas.</p></details>
+            <details><summary>¿Viajan a otras ciudades?</summary><p>Sí, cubrimos bodas en todo México y bodas destino. Los viáticos se cotizan aparte según la sede.</p></details>
+            <details><summary>¿Podemos armar un paquete a nuestra medida?</summary><p>Claro. Pueden usar el cotizador para sumar o quitar servicios, o platicarlo directamente con nosotros.</p></details>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="px-6 sm:px-10 lg:px-12 py-8 flex flex-col sm:flex-row items-center justify-between text-xs text-brandMuted gap-4 bg-brandIvory">
+        <div class="font-normal">© 2026 — MAUCAPESTUDIO. Fotografía & Cine Documental de Bodas.</div>
+      </footer>
+
+    </div>
+
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- GALERÍA EMERGENTE DEL PORTAFOLIO                         -->
+  <!-- ======================================================== -->
+  <div id="pfLightbox" class="pf-lb" role="dialog" aria-modal="true" aria-label="Galería" aria-hidden="true">
+    <div class="pf-lb-top">
+      <div class="pf-lb-info">
+        <span class="pf-lb-meta" id="pfLbMeta"></span>
+        <h3 class="pf-lb-name" id="pfLbName"></h3>
+      </div>
+      <div class="pf-lb-right">
+        <span class="pf-lb-count" id="pfLbCount"></span>
+        <button type="button" class="pf-lb-close" id="pfLbClose" aria-label="Cerrar galería">
+          <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="pf-lb-stage" id="pfLbStage">
+      <button type="button" class="pf-lb-nav prev" id="pfLbPrev" aria-label="Foto anterior"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <img id="pfLbImg" alt="">
+      <button type="button" class="pf-lb-nav next" id="pfLbNext" aria-label="Foto siguiente"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+    <div class="pf-lb-thumbs" id="pfLbThumbs"></div>
+  </div>
+
+  <!-- BOTÓN FLOTANTE DE WHATSAPP -->
+  <a id="ctFab" class="ct-fab" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.4-.3z"/></svg>
+  </a>
+
+  <!-- TOAST -->
+  <div id="appToast" class="fixed bottom-6 right-6 z-50 bg-brandDark text-white px-5 py-3.5 shadow-2xl flex items-center gap-3 border border-neutral-700 transform translate-y-24 opacity-0 transition-all duration-300 text-xs font-semibold uppercase tracking-wider pointer-events-none rounded-sm">
+    <span class="text-emerald-400">●</span>
+    <span id="toastMessageText">Actualización realizada correctamente.</span>
+  </div>
+
+  <script>
+    const weddingCollection = [
+      { id: 0, title: "Sofía & Nicolás — Hacienda San Antonio, Colima", url: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=2000&q=85" },
+      { id: 1, title: "Elena & Julián — Villa Balbiano, Lago de Como", url: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=2000&q=85" },
+      { id: 2, title: "Camila & Mateo — Santo Domingo, Oaxaca", url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=2000&q=85" },
+      { id: 3, title: "Valentina & Arthur — Château de Tourreau, Provenza", url: "https://images.unsplash.com/photo-1544077960-604201fe74bc?auto=format&fit=crop&w=2000&q=85" },
+      { id: 4, title: "Estudio de Velo & Seda — Cobertura Editorial", url: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=2000&q=85" },
+      { id: 5, title: "Clara & Sebastián — San Miguel de Allende", url: "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&w=2000&q=85" }
+    ];
+
+    let currentSlideIdx = 0;
+    let isAutoplaying = true;
+    let progressStartTime = Date.now();
+    let elapsedBeforePause = 0;
+    const SLIDE_DURATION = 5000;
+    let animationFrameId = null;
+
+    const activeCarouselImg = document.getElementById('activeCarouselImg');
+    const bufferCarouselImg = document.getElementById('bufferCarouselImg');
+    const slideCounterLabel = document.getElementById('slideCounterLabel');
+    const slideTitleLabel = document.getElementById('slideTitleLabel');
+    const carouselProgressBar = document.getElementById('carouselProgressBar');
+    const iconPause = document.getElementById('iconPause');
+    const iconPlay = document.getElementById('iconPlay');
+
+    function renderSlide(index, withCrossfade = true) {
+      currentSlideIdx = (index + weddingCollection.length) % weddingCollection.length;
+      const data = weddingCollection[currentSlideIdx];
+
+      if (slideCounterLabel) slideCounterLabel.textContent = `0${currentSlideIdx + 1} / 0${weddingCollection.length}`;
+      if (slideTitleLabel) slideTitleLabel.textContent = data.title;
+
+      if (withCrossfade) {
+        bufferCarouselImg.src = data.url;
+        bufferCarouselImg.classList.remove('opacity-0');
+        bufferCarouselImg.classList.add('opacity-100');
+
+        setTimeout(() => {
+          activeCarouselImg.src = data.url;
+          bufferCarouselImg.classList.remove('opacity-100');
+          bufferCarouselImg.classList.add('opacity-0');
+        }, 550);
+      } else {
+        activeCarouselImg.src = data.url;
+      }
+
+      resetProgress();
+    }
+
+    function nextSlide() { renderSlide(currentSlideIdx + 1); }
+    function prevSlide() { renderSlide(currentSlideIdx - 1); }
+
+    function toggleCarouselPlayPause() {
+      isAutoplaying = !isAutoplaying;
+      if (isAutoplaying) {
+        iconPause.classList.remove('hidden');
+        iconPlay.classList.add('hidden');
+        progressStartTime = Date.now() - elapsedBeforePause;
+        startProgressLoop();
+      } else {
+        iconPause.classList.add('hidden');
+        iconPlay.classList.remove('hidden');
+        elapsedBeforePause = Date.now() - progressStartTime;
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      }
+    }
+
+    function handleCarouselClick(event) {
+      const rect = event.currentTarget.getBoundingClientRect();
+      if ((event.clientX - rect.left) < rect.width / 2) { prevSlide(); } else { nextSlide(); }
+    }
+
+    function syncLeftCarouselTo(index) {
+      renderSlide(index);
+      if (window.innerWidth < 768) window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function startProgressLoop() {
+      function step() {
+        if (!isAutoplaying) return;
+        const elapsed = Date.now() - progressStartTime;
+        const percent = Math.min((elapsed / SLIDE_DURATION) * 100, 100);
+        carouselProgressBar.style.width = `${percent}%`;
+        if (elapsed >= SLIDE_DURATION) { nextSlide(); } else { animationFrameId = requestAnimationFrame(step); }
+      }
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      animationFrameId = requestAnimationFrame(step);
+    }
+
+    function resetProgress() {
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      elapsedBeforePause = 0;
+      progressStartTime = Date.now();
+      carouselProgressBar.style.width = '0%';
+      if (isAutoplaying) startProgressLoop();
+    }
+
+    window.onload = function() {
+      renderSlide(0, false);
+      startProgressLoop();
+    };
+  </script>
+  <!-- ===== SCRIPT DEL PORTAFOLIO ===== -->
+  <script>
+  (function(){
+    // Cambia aquí tus bodas y sus fotos. La primera foto de cada boda es la portada.
+    const U = id => 'https://images.unsplash.com/' + id + '?auto=format&fit=crop&w=1800&q=80';
+    const PORTAFOLIO = [
+      { novios:'Sofía & Nicolás', lugar:'Hacienda San Antonio, Colima', fecha:'04 — 2026',
+        texto:'Una tarde de campo, flores silvestres y una promesa dicha en voz baja. Todo lo que pasó entre miradas quedó guardado.',
+        fotos:['photo-1519741497674-611481863552','photo-1529636798458-92182e662485','photo-1607190074257-dd4b7af0309f','photo-1606216794074-735e91aa2c92','photo-1515934751635-c81c6bc9a2d8','photo-1523438885200-e635ba2c371e','photo-1606490194859-07c18c9f0968','photo-1527529482837-4698179dc6ce'] },
+      { novios:'Valeria & Diego', lugar:'San Miguel de Allende, Guanajuato', fecha:'11 — 2025',
+        texto:'Calles de piedra, campanas al atardecer y una fiesta que nadie quería que terminara.',
+        fotos:['photo-1532712938310-34cb3982ef74','photo-1595407753234-0882f1e77954','photo-1591604466107-ec97de577aff','photo-1606800052052-a08af7148866','photo-1502635385003-ee1e6a1a742d','photo-1596457221755-b96bc3a6df18','photo-1714972383570-44ddc9738355','photo-1591604442449-ecc9943efabf'] },
+      { novios:'Renata & Iván', lugar:'Mérida, Yucatán', fecha:'03 — 2025',
+        texto:'Una hacienda antigua, luz dorada entre los muros y el abrazo más largo de la noche.',
+        fotos:['photo-1583939003579-730e3918a45a','photo-1550784718-990c6de52adf','photo-1670529776180-60e4132ab90c','photo-1519225421980-715cb0215aed','photo-1648154164366-d067faecdc51','photo-1545232979-8bf68ee9b1af','photo-1606216836537-eea72a939072','photo-1680695779444-24fc71296e66'] },
+      { novios:'Camila & Andrés', lugar:'Valle de Bravo, Estado de México', fecha:'09 — 2024',
+        texto:'Entre el bosque y el lago, una boda íntima donde cada detalle se sintió como en casa.',
+        fotos:['photo-1606216794079-73f85bbd57d5','photo-1507915977619-6ccfe8003ae6','photo-1505944357431-27579db47558','photo-1631225893179-4d6e349189c2','photo-1606490208247-b65be3d94cd1','photo-1469371670807-013ccf25f16a','photo-1546032996-6dfacbacbf3f','photo-1524824267900-2fa9cbf7a506'] },
+      { novios:'Lucía & Emilio', lugar:'Ciudad de México', fecha:'02 — 2024',
+        texto:'Una ceremonia en blanco y negro, sin poses: solo dos personas que ya se conocían de toda la vida.', bn:true,
+        fotos:['photo-1460978812857-470ed1c77af0','photo-1520854221256-17451cc331bf','photo-1465495976277-4387d4b0b4c6','photo-1588849538263-fbc2b7b8965f','photo-1542598688-76ad90c5b01e','photo-1723832347953-83c28e2d4dd2','photo-1548313093-370cf4ba3892','photo-1583939411023-14783179e581'] }
+    ];
+
+    const list = document.getElementById('portfolioList');
+    const pad = n => String(n).padStart(2,'0');
+    list.innerHTML = PORTAFOLIO.map((b,i)=>`
+      <article class="pf-item${b.bn?' pf-bn':''}" tabindex="0" data-i="${i}" aria-label="Ver galería de ${b.novios}">
+        <div class="pf-cover">
+          <img src="${U(b.fotos[0]).replace('w=1800','w=900')}" alt="${b.novios}" loading="lazy">
+          <span class="pf-open uppercase">Ver galería →</span>
+        </div>
+        <div class="pf-body">
+          <div>
+            <span class="pf-date uppercase">${b.fecha}</span>
+            <h3 class="pf-name">${b.novios}</h3>
+            <span class="pf-place">${b.lugar}</span>
+          </div>
+          <div>
+            <p class="pf-text">${b.texto}</p>
+            <span class="pf-count uppercase">${pad(b.fotos.length)} fotografías</span>
+          </div>
+        </div>
+      </article>`).join('');
+
+    // --- Galería emergente ---
+    const lb=document.getElementById('pfLightbox'), img=document.getElementById('pfLbImg'),
+          thumbs=document.getElementById('pfLbThumbs'), count=document.getElementById('pfLbCount');
+    let cur=null, idx=0, lastFocus=null;
+
+    function show(n){
+      idx=(n+cur.fotos.length)%cur.fotos.length;
+      img.classList.remove('show');
+      const src=U(cur.fotos[idx]);
+      const pre=new Image();
+      pre.onload=pre.onerror=()=>{ img.src=src; img.alt=cur.novios+' — foto '+(idx+1); requestAnimationFrame(()=>img.classList.add('show')); };
+      pre.src=src;
+      count.textContent=pad(idx+1)+' / '+pad(cur.fotos.length);
+      [...thumbs.children].forEach((t,i)=>t.classList.toggle('on',i===idx));
+      const on=thumbs.children[idx]; if(on) on.scrollIntoView({block:'nearest',inline:'center'});
+    }
+    function open(i){
+      cur=PORTAFOLIO[i]; lastFocus=document.activeElement;
+      document.getElementById('pfLbName').textContent=cur.novios;
+      document.getElementById('pfLbMeta').textContent=cur.lugar+'  ·  '+cur.fecha;
+      thumbs.innerHTML=cur.fotos.map((f,k)=>`<button type="button" aria-label="Foto ${k+1}"><img src="${U(f).replace('w=1800','w=200')}" alt=""></button>`).join('');
+      [...thumbs.children].forEach((t,k)=>t.onclick=()=>show(k));
+      lb.classList.toggle('pf-bn',!!cur.bn);
+      lb.classList.add('open'); lb.setAttribute('aria-hidden','false');
+      document.body.style.overflow='hidden';
+      show(0);
+      document.getElementById('pfLbClose').focus();
+    }
+    function close(){
+      lb.classList.remove('open'); lb.setAttribute('aria-hidden','true');
+      document.body.style.overflow='';
+      if(lastFocus) lastFocus.focus();
+    }
+
+    list.addEventListener('click',e=>{const it=e.target.closest('.pf-item'); if(it) open(+it.dataset.i);});
+    list.addEventListener('keydown',e=>{const it=e.target.closest('.pf-item'); if(it&&(e.key==='Enter'||e.key===' ')){e.preventDefault(); open(+it.dataset.i);}});
+    document.getElementById('pfLbClose').onclick=close;
+    document.getElementById('pfLbPrev').onclick=()=>show(idx-1);
+    document.getElementById('pfLbNext').onclick=()=>show(idx+1);
+    document.getElementById('pfLbStage').addEventListener('click',e=>{ if(e.target.id==='pfLbStage') close(); });
+    document.addEventListener('keydown',e=>{
+      if(!lb.classList.contains('open')) return;
+      if(e.key==='Escape') close();
+      if(e.key==='ArrowRight') show(idx+1);
+      if(e.key==='ArrowLeft') show(idx-1);
+    });
+    // Deslizar con el dedo en celular
+    let x0=null;
+    lb.addEventListener('touchstart',e=>{x0=e.touches[0].clientX;},{passive:true});
+    lb.addEventListener('touchend',e=>{ if(x0===null) return; const dx=e.changedTouches[0].clientX-x0; if(Math.abs(dx)>50) show(idx+(dx<0?1:-1)); x0=null; });
+  })();
+  </script>
+
+  <!-- ===== DATOS DE CONTACTO + SCRIPT DE CONTACTO ===== -->
+  <script>
+    // ------ CAMBIA AQUÍ TUS DATOS (se usan en Contacto y en el Cotizador) ------
+    window.CONTACTO = {
+      whatsapp:  '5215578936152',          // con lada, sin + ni espacios
+      telefono:  '+52 1 55 7893 6152',     // como se ve en la página
+      llamar:    '+525578936152',          // número para el botón "Llamar"
+      correo:    'maucapesociales@gmail.com',
+      instagram: 'maucapesociales',        // solo el usuario, sin @
+      facebook:  '',                       // pon aquí el nombre de tu página cuando la tengas (si está vacío, no se muestra)
+      tiktok:    ''                        // igual: si está vacío, no se muestra
+    };
+  </script>
+  <script>
+  (function(){
+    const C = window.CONTACTO, $ = id => document.getElementById(id);
+    const wa = t => 'https://wa.me/' + C.whatsapp + (t ? '?text=' + encodeURIComponent(t) : '');
+    const ICON = {
+      wa:'<path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.4-.3z"/>',
+      ig:'<path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4zM17.3 5.5a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zM12 3.8c2.7 0 3 0 4 .1 2.7.1 3.9 1.4 4 4 .1 1 .1 1.3.1 4s0 3-.1 4c-.1 2.6-1.3 3.9-4 4-1 .1-1.3.1-4 .1s-3 0-4-.1c-2.7-.1-3.9-1.4-4-4-.1-1-.1-1.3-.1-4s0-3 .1-4c.1-2.6 1.3-3.9 4-4 1-.1 1.3-.1 4-.1zM12 2c-2.7 0-3.1 0-4.1.1C4.2 2.3 2.3 4.2 2.1 7.9 2 8.9 2 9.3 2 12s0 3.1.1 4.1c.2 3.7 2.1 5.6 5.8 5.8 1 .1 1.4.1 4.1.1s3.1 0 4.1-.1c3.7-.2 5.6-2.1 5.8-5.8.1-1 .1-1.4.1-4.1s0-3.1-.1-4.1c-.2-3.7-2.1-5.6-5.8-5.8C15.1 2 14.7 2 12 2z"/>',
+      fb:'<path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.5 1.6-1.5h1.7V4.4a22 22 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.3v2.3H7.4V14h2.7v8h3.4z"/>',
+      tt:'<path d="M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.1v12.4a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.8a5.8 5.8 0 1 0 5 5.6V9.1a7.4 7.4 0 0 0 4.3 1.4V7.4a4.3 4.3 0 0 1-3.3-1.6z"/>',
+      mail:'<path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1 2.4V17h16V7.4l-8 5.3-8-5.3zM5.2 7l6.8 4.5L18.8 7H5.2z"/>',
+      tel:'<path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/>'
+    };
+    const CH = [
+      { ic:'wa',   n:'WhatsApp',  v:C.telefono,          href:wa('Hola MAUCAPESTUDIO, me gustaría información para mi boda.') },
+      { ic:'ig',   n:'Instagram', v:'@'+C.instagram,      href:'https://instagram.com/'+C.instagram },
+      C.facebook && { ic:'fb', n:'Facebook', v:'/'+C.facebook, href:'https://facebook.com/'+C.facebook },
+      C.tiktok   && { ic:'tt', n:'TikTok',   v:'@'+C.tiktok,   href:'https://tiktok.com/@'+C.tiktok },
+      { ic:'mail', n:'Correo',    v:C.correo,             href:'mailto:'+C.correo },
+      { ic:'tel',  n:'Llamar',    v:C.telefono,           href:'tel:'+(C.llamar||C.telefono.replace(/\s/g,'')) }
+    ].filter(Boolean);
+    $('ctChannels').innerHTML = CH.map(c=>`
+      <a class="ct-ch" href="${c.href}" ${c.href.startsWith('http')?'target="_blank" rel="noopener"':''}>
+        <span class="ct-ch-ic"><svg viewBox="0 0 24 24">${ICON[c.ic]}</svg></span>
+        <span class="ct-ch-txt"><span class="ct-ch-name uppercase">${c.n}</span><span class="ct-ch-val">${c.v}</span></span>
+        <span class="ct-ch-arrow">→</span>
+      </a>`).join('');
+
+    // Fecha bonita: 2026-11-14 -> 14 de noviembre de 2026
+    const nice = d => d ? new Date(d+'T12:00:00').toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}) : '';
+
+    // Consultar disponibilidad
+    const setAvail = () => {
+      const d = $('ctAvailDate').value;
+      $('ctAvailBtn').href = wa(d ? `¡Hola, MAUCAPESTUDIO!\nNos encantaría que fotografiaran nuestra boda.\n\n*¿Tienen disponible el ${nice(d)}?*\n\n¡Muchas gracias!` : 'Hola MAUCAPESTUDIO, quisiera saber si tienen disponible nuestra fecha de boda.');
+    };
+    $('ctAvailDate').addEventListener('input', setAvail); setAvail();
+
+    // Formulario
+    let via = 'wa';
+    document.querySelectorAll('#ctForm [data-via]').forEach(b=>b.addEventListener('click',()=>via=b.dataset.via));
+    $('ctForm').addEventListener('submit', e=>{
+      e.preventDefault();
+      const v = id => $(id).value.trim(), err=$('ctError');
+      ['ctName','ctEmail','ctPhone'].forEach(id=>$(id).classList.remove('ct-field-err'));
+      if(!v('ctName')){ $('ctName').classList.add('ct-field-err'); err.textContent='Escriban sus nombres para poder responderles.'; $('ctName').focus(); return; }
+      if(!v('ctEmail') && !v('ctPhone')){ $('ctEmail').classList.add('ct-field-err'); $('ctPhone').classList.add('ct-field-err'); err.textContent='Déjennos un correo o un teléfono para contactarlos.'; return; }
+      err.textContent='';
+      const b = via==='mail' ? (t=>t) : (t=>'*'+t+'*');   // negritas solo en WhatsApp
+      const txt = [
+        '¡Hola, MAUCAPESTUDIO!',
+        'Somos '+v('ctName')+' y nos gustaría recibir información para nuestra boda.',
+        '',
+        b('DATOS DE CONTACTO'),
+        v('ctEmail') ? '• Correo: '+v('ctEmail') : null,
+        v('ctPhone') ? '• Teléfono: '+v('ctPhone') : null,
+        '',
+        b('SOBRE LA BODA'),
+        '• Fecha: '+(v('ctDate') ? nice(v('ctDate')) : 'Por definir'),
+        v('ctSource') ? '• Nos enteramos por: '+v('ctSource') : null,
+        ...(v('ctMsg') ? ['', b('MENSAJE'), v('ctMsg')] : []),
+        '',
+        'Quedamos atentos. ¡Muchas gracias!'
+      ].filter(x=>x!==null).join('\n');
+      if(via==='mail') location.href = 'mailto:'+C.correo+'?subject='+encodeURIComponent('Información para nuestra boda — '+v('ctName'))+'&body='+encodeURIComponent(txt);
+      else window.open(wa(txt), '_blank');
+    });
+
+    // Botón flotante de WhatsApp (se oculta en el formulario y en el cotizador)
+    const fab=$('ctFab'); fab.href = wa('Hola MAUCAPESTUDIO, me gustaría información para mi boda.');
+    const hideOn = new Set();
+    const io = new IntersectionObserver(es=>{ es.forEach(e=>e.isIntersecting?hideOn.add(e.target):hideOn.delete(e.target)); fab.classList.toggle('hide', hideOn.size>0); },{threshold:.05});
+    [$('ctForm'), document.querySelector('#cotizador .qt-steps')].forEach(el=>el&&io.observe(el));
+  })();
+  </script>
+
+  <!-- ===== SCRIPT DEL COTIZADOR ===== -->
+  <script>
+  (function(){
+    // ------ CONFIGURACIÓN: cambia aquí tu WhatsApp, paquetes y precios ------
+    const WHATSAPP = (window.CONTACTO && window.CONTACTO.whatsapp) || '520000000000'; // se cambia arriba, en CONTACTO
+
+    const PAQUETES = [
+      { id:'esencial',  nombre:'Esencial',  desc:'Fotografía · 6 h',        precio:12900, incluye:[], detalle:'6 h de cobertura · 1 fotógrafo · 350+ fotos editadas · galería digital' },
+      { id:'clásico',   nombre:'Clásico',   desc:'Foto + video · 8 h',      precio:19900, incluye:['preboda','book10'], detalle:'8 h · fotógrafo + videógrafo · preboda · video resumen · photo book 10×10' },
+      { id:'signature', nombre:'Signature', desc:'Foto + cine · 10 h',      precio:28900, incluye:['preboda','dron','book12','foto2'], detalle:'10 h · 2 fotógrafos + videógrafo · preboda · película 10–15 min · dron · photo book 12×12' },
+      { id:'legado',    nombre:'Legado',    desc:'Todo incluido · todo el día', precio:42000, incluye:['preboda','dron','foto2','video2','std','ttd','film','express','lino','replicas'], detalle:'Todo el día · 2 fotógrafos + 2 videógrafos · película documental · rollo 35 mm · álbum de lino' }
+    ];
+
+    const EXTRAS = [
+      { cat:'Cobertura y equipo', items:[
+        { id:'hora',    nombre:'Hora extra de cobertura', info:'Por cada hora adicional', precio:1800, qty:true, max:6 },
+        { id:'foto2',   nombre:'Segundo fotógrafo', info:'Más ángulos y momentos simultáneos', precio:4000 },
+        { id:'video2',  nombre:'Videógrafo adicional', info:'Doble cámara en ceremonia y fiesta', precio:5000 },
+        { id:'dron',    nombre:'Tomas con dron', info:'Fotos y video aéreo de la sede', precio:3500 },
+        { id:'film',    nombre:'Rollo 35 mm analógico', info:'Kodak Portra, revelado incluido', precio:3800 },
+        { id:'civil',   nombre:'Boda civil (otro día)', info:'Cobertura de 2 horas', precio:3000 }
+      ]},
+      { cat:'Sesiones', items:[
+        { id:'preboda', nombre:'Sesión preboda', info:'1 hora en la locación que elijan', precio:3500 },
+        { id:'ttd',     nombre:'Trash the dress', info:'Sesión después de la boda', precio:4000 },
+        { id:'soltera', nombre:'Despedida de soltera', info:'Cobertura de 2 horas', precio:3500 }
+      ]},
+      { cat:'Video', items:[
+        { id:'std',     nombre:'Video save the date', info:'Para compartir con sus invitados', precio:3000 },
+        { id:'sde',     nombre:'Same day edit', info:'Video editado y proyectado en la fiesta', precio:6500 },
+        { id:'stream',  nombre:'Transmisión en vivo', info:'Para familia que no pueda asistir', precio:4500 },
+        { id:'express', nombre:'Entrega express', info:'Avance de fotos en 72 horas', precio:1500 }
+      ]},
+      { cat:'Álbumes e impresos', items:[
+        { id:'book10',  nombre:'Photo book 10 × 10"', info:'20 páginas, pasta dura', precio:3200 },
+        { id:'book12',  nombre:'Photo book 12 × 12"', info:'30 páginas, pasta de lino', precio:4500 },
+        { id:'lino',    nombre:'Álbum premium 30 × 30"', info:'Lino y papel algodón, caja de regalo', precio:7500 },
+        { id:'replicas',nombre:'Réplicas para papás', info:'2 álbumes pequeños', precio:3200 },
+        { id:'lienzo',  nombre:'Cuadro en lienzo 60 × 90 cm', info:'Su foto favorita, lista para colgar', precio:2200 },
+        { id:'usb',     nombre:'Caja de madera + USB', info:'Grabada con sus nombres', precio:900 }
+      ]},
+      { cat:'Para sus invitados', items:[
+        { id:'c360',    nombre:'Cabina 360', info:'3 horas, videos al momento', precio:5500 },
+        { id:'booth',   nombre:'Photobooth con impresión', info:'3 horas, fotos impresas ilimitadas', precio:4800 },
+        { id:'guest',   nombre:'Libro de firmas con fotos', info:'Fotos instantáneas para el libro', precio:2500 }
+      ]}
+    ];
+    // ------------------------------------------------------------------------
+
+    const $ = id => document.getElementById(id);
+    const money = n => '$' + n.toLocaleString('es-MX');
+    const ALL = {}; EXTRAS.forEach(c=>c.items.forEach(i=>ALL[i.id]=i));
+    const tick = '<span class="qt-tick"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg></span>';
+
+    $('qtPkgs').innerHTML = PAQUETES.map((p,i)=>`
+      <label class="qt-pkg"><input type="radio" name="qtPkg" value="${p.id}" ${i===2?'checked':''}>
+        <span class="qt-pkg-box"><span class="qt-pkg-name">${p.nombre}</span><span class="qt-pkg-desc">${p.desc}</span><span class="qt-pkg-price">${money(p.precio)}</span></span>
+      </label>`).join('');
+
+    $('qtExtras').innerHTML = EXTRAS.map(c=>`
+      <div class="qt-cat"><span class="qt-cat-t uppercase">${c.cat}</span><div class="qt-extras">
+        ${c.items.map(i=>`
+          <label class="qt-extra" data-id="${i.id}"><input type="checkbox" value="${i.id}">
+            <span class="qt-extra-box">${tick}
+              <span class="qt-extra-txt"><span class="qt-extra-name">${i.nombre}</span><span class="qt-extra-info">${i.info}</span>
+                ${i.qty?`<span class="qt-qty"><button type="button" data-q="-1" aria-label="Menos">−</button><span data-qv>1</span><button type="button" data-q="1" aria-label="Más">+</button></span>`:''}
+              </span>
+              <span class="qt-extra-price">${money(i.precio)}</span>
+            </span>
+          </label>`).join('')}
+      </div></div>`).join('');
+
+    const qty = {hora:1};
+    // Folio único por visita, para identificar cada cotización
+    const FOLIO = 'MC-' + new Date().toISOString().slice(2,10).replace(/-/g,'') + '-' + Math.floor(1000 + Math.random()*9000);
+    const pkg = () => PAQUETES.find(p=>p.id===document.querySelector('input[name=qtPkg]:checked').value);
+
+    function update(){
+      const P = pkg();
+      document.querySelectorAll('.qt-extra').forEach(el=>{
+        const id=el.dataset.id, inp=el.querySelector('input'), inc=P.incluye.includes(id);
+        el.classList.toggle('incl',inc);
+        inp.disabled=inc; if(inc) inp.checked=false;
+        el.querySelector('.qt-extra-price').textContent = inc ? 'Incluido' : money(ALL[id].precio*(ALL[id].qty?qty[id]:1));
+        const qv=el.querySelector('[data-qv]'); if(qv) qv.textContent = qty[id]+(qty[id]===1?' hora':' horas');
+      });
+      const lines=[];
+      document.querySelectorAll('.qt-extra input:checked').forEach(inp=>{
+        const e=ALL[inp.value], q=e.qty?qty[e.id]:1;
+        lines.push([e.nombre+(e.qty?` (${q})`:''), e.precio*q]);
+      });
+      const total = P.precio + lines.reduce((a,l)=>a+l[1],0);
+      $('qtSumPkg').textContent = 'Paquete ' + P.nombre;
+      $('qtSumLines').innerHTML = `<li><span>Paquete ${P.nombre}</span><b>${money(P.precio)}</b></li>` +
+        lines.map(l=>`<li><span>${l[0]}</span><b>${money(l[1])}</b></li>`).join('') +
+        ($('qtTravel').checked?'<li><span>Viáticos fuera de la ciudad</span><b>Por cotizar</b></li>':'');
+      $('qtTotal').textContent = money(total);
+      $('qtBarTotal').textContent = money(total);
+      $('qtDeposit').textContent = money(Math.round(total*0.3));
+
+      const v=id=>$(id).value.trim();
+      const pend = 'Por definir';
+      const fecha = v('qtDate') ? new Date(v('qtDate')+'T12:00:00').toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'}) : pend;
+      const folio = FOLIO;
+      const msg = [
+        '¡Hola, MAUCAPESTUDIO!',
+        (v('qtNames') ? 'Somos '+v('qtNames')+' y nos' : 'Nos') + ' gustaría recibir la cotización de nuestra boda.',
+        '',
+        '*DATOS DE LA BODA*',
+        v('qtNames') ? '• Novios: '+v('qtNames') : null,
+        '• Fecha: '+fecha,
+        (v('qtPlace')||$('qtTravel').checked) ? '• Lugar: '+(v('qtPlace')||pend)+($('qtTravel').checked?' (fuera de la ciudad)':'') : null,
+        v('qtGuests') ? '• Invitados: '+v('qtGuests') : null,
+        '',
+        '*PAQUETE ELEGIDO*',
+        P.nombre+' — '+money(P.precio),
+        '_'+P.detalle+'_',
+        '',
+        '*SERVICIOS EXTRA*',
+        ...(lines.length ? lines.map(l=>'• '+l[0]+' — '+money(l[1])) : ['• Ninguno por ahora']),
+        ...($('qtTravel').checked ? ['• Viáticos — por cotizar'] : []),
+        '',
+        '*TOTAL ESTIMADO: '+money(total)+' MXN*',
+        'Anticipo para apartar la fecha (30%): '+money(Math.round(total*0.3)),
+        '',
+        'Folio: '+folio,
+        '¿Nos podrían confirmar si tienen disponible nuestra fecha? ¡Muchas gracias!'
+      ].filter(x=>x!==null).join('\n');
+      $('qtSend').href = 'https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(msg);
+    }
+
+    document.getElementById('cotizador').addEventListener('change', update);
+    document.getElementById('cotizador').addEventListener('input', e=>{ if(e.target.matches('.qt-field input')) update(); });
+    $('qtExtras').addEventListener('click', e=>{
+      const b=e.target.closest('[data-q]'); if(!b) return;
+      e.preventDefault(); const id=b.closest('.qt-extra').dataset.id, it=ALL[id];
+      qty[id]=Math.min(it.max||10, Math.max(1, qty[id]+(+b.dataset.q)));
+      b.closest('.qt-extra').querySelector('input').checked = true;
+      update();
+    });
+    $('qtReset').onclick=()=>{
+      document.querySelectorAll('.qt-extra input').forEach(i=>i.checked=false);
+      document.querySelector('input[name=qtPkg][value=signature]').checked=true;
+      qty.hora=1; update();
+    };
+
+    // Botones "Contratar" de Paquetes: seleccionan ese paquete en el cotizador
+    document.querySelectorAll('[data-pkg]').forEach(btn=>btn.addEventListener('click',()=>{
+      const r=document.querySelector(`input[name=qtPkg][value="${btn.dataset.pkg}"]`);
+      if(r){ r.checked=true; update(); }
+    }));
+
+    update();
+
+    // Oculta la barra flotante cuando el resumen ya está en pantalla
+    const bar=$('qtBar'); let inSec=false, inSum=false;
+    const refresh=()=>bar.classList.toggle('hide', !inSec || inSum);
+    new IntersectionObserver(es=>es.forEach(e=>{inSum=e.isIntersecting; refresh();}),{threshold:.15}).observe($('qtSummary'));
+    new IntersectionObserver(es=>es.forEach(e=>{inSec=e.isIntersecting; refresh();})).observe(document.querySelector('#cotizador .qt-steps'));
+    refresh();
+  })();
+  </script>
+
+  <!-- ===== SCRIPT DEL MENÚ (sección activa) ===== -->
+  <script>
+  (function(){
+    const links=[...document.querySelectorAll('.nav-link')];
+    const setActive=id=>links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+id));
+    let lock=0;
+    links.forEach(a=>a.addEventListener('click',()=>{ setActive(a.getAttribute('href').slice(1)); lock=Date.now(); }));
+    // Al hacer scroll, se marca la sección que está en pantalla
+    const io=new IntersectionObserver(es=>{
+      if(Date.now()-lock<900) return;
+      es.forEach(e=>{ if(e.isIntersecting) setActive(e.target.id); });
+    },{rootMargin:'-40% 0px -55% 0px'});
+    links.forEach(a=>{ const s=document.querySelector(a.getAttribute('href')); if(s) io.observe(s); });
+  })();
+  </script>
+
+  <!-- ===== SCRIPT DEL LOGO INTERACTIVO ===== -->
+  <script>
+  (function(){
+    const root=document.getElementById('mcLogo'); if(!root) return;
+    const g=root.querySelector('.mc-lines'), NS='http://www.w3.org/2000/svg';
+    const G={N:170, LINES:7, GAP:5, R:40, ARCH:[85,155], CY:80, BASE:186, HX:120, HY:124, HS:4.7};
+    function resample(pts,n){
+      const d=[0];
+      for(let i=1;i<pts.length;i++) d.push(d[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));
+      const total=d[d.length-1], out=[]; let j=1;
+      for(let i=0;i<n;i++){
+        const t=total*i/(n-1);
+        while(j<d.length-1 && d[j]<t) j++;
+        const seg=d[j]-d[j-1]||1, f=(t-d[j-1])/seg;
+        out.push([pts[j-1][0]+(pts[j][0]-pts[j-1][0])*f, pts[j-1][1]+(pts[j][1]-pts[j-1][1])*f]);
+      }
+      return out;
+    }
+    function arch(cx,r){
+      const p=[];
+      for(let y=G.BASE;y>=G.CY;y-=2) p.push([cx-r,y]);
+      for(let i=0;i<=80;i++){const a=Math.PI-Math.PI*i/80; p.push([cx+r*Math.cos(a), G.CY-r*Math.sin(a)]);}
+      for(let y=G.CY;y<=G.BASE;y+=2) p.push([cx+r,y]);
+      return resample(p,G.N);
+    }
+    function lobe(side,s){
+      const p=[], a0=side===0?-Math.PI:0, a1=side===0?0:Math.PI;
+      for(let i=0;i<=400;i++){
+        const t=a0+(a1-a0)*i/400;
+        const x=16*Math.pow(Math.sin(t),3);
+        const y=13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
+        p.push([G.HX+G.HS*s*x, G.HY-G.HS*s*(y+2.5)]);
+      }
+      return resample(p,G.N);
+    }
+    const lines=[];
+    for(let side=0;side<2;side++) for(let k=0;k<G.LINES;k++){
+      const el=document.createElementNS(NS,'path'); g.appendChild(el);
+      lines.push({el,k,logo:arch(G.ARCH[side],G.R-k*G.GAP),heart:lobe(side,1-k*0.115),p:0,from:0});
+    }
+    const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+    let target=0,tStart=0,ready=false; const DUR=1500,STAGGER=85, m={x:0,y:0,sx:0,sy:0};
+    function setTarget(v){
+      if(v===target) return; target=v; tStart=performance.now();
+      lines.forEach(l=>l.from=l.p);
+      root.classList.toggle('is-logo',v===1); root.classList.toggle('is-heart',v===0);
+    }
+    function draw(now,once){
+      m.sx+=(m.x-m.sx)*.08; m.sy+=(m.y-m.sy)*.08;
+      for(const l of lines){
+        const order=target===1?l.k:(G.LINES-1-l.k);
+        const local=Math.min(Math.max((now-tStart-order*STAGGER)/DUR,0),1);
+        l.p=l.from+(target-l.from)*ease(local);
+        const ox=m.sx*(l.k+1)*1.3, oy=m.sy*(l.k+1)*1.3; let d='';
+        for(let i=0;i<G.N;i++){
+          const a=l.heart[i],b=l.logo[i];
+          d+=(i?'L':'M')+(a[0]+(b[0]-a[0])*l.p+ox).toFixed(2)+' '+(a[1]+(b[1]-a[1])*l.p+oy).toFixed(2);
+        }
+        l.el.setAttribute('d',d);
+      }
+      if(!once) requestAnimationFrame(draw);
+    }
+    root.classList.add('is-heart'); requestAnimationFrame(draw);
+    let timers=[];
+    // Animación de entrada: se dibuja el corazón, late y se transforma en el logo
+    function playIntro(delay){
+      timers.forEach(clearTimeout); timers=[];
+      ready=false; root.classList.remove('ready');
+      target=0; lines.forEach(l=>{l.p=l.from=0;});
+      root.classList.add('is-heart'); root.classList.remove('is-logo');
+      if(matchMedia('(prefers-reduced-motion: reduce)').matches){
+        lines.forEach(l=>l.p=l.from=1); setTarget(1); ready=true; root.classList.add('ready'); return;
+      }
+      draw(performance.now(),true);
+      lines.forEach(l=>{
+        const len=l.el.getTotalLength();
+        l.el.style.transition='none';
+        l.el.style.strokeDasharray=len; l.el.style.strokeDashoffset=len; l.el.getBoundingClientRect();
+        l.el.style.transition='stroke-dashoffset 1.6s cubic-bezier(.65,0,.35,1) '+(l.k*.12+delay/1000)+'s';
+        l.el.style.strokeDashoffset=0;
+      });
+      timers.push(setTimeout(()=>{lines.forEach(l=>{l.el.style.transition='';l.el.style.strokeDasharray='';l.el.style.strokeDashoffset='';}); root.classList.add('ready');},2400+delay));
+      timers.push(setTimeout(()=>{setTarget(1); ready=true;},3600+delay));
+    }
+    playIntro(300);
+
+    // Al dar clic en "Inicio" del menú, se repite la animación del logo
+    document.querySelectorAll('a[href="#inicio"]').forEach(a=>a.addEventListener('click',()=>playIntro(450)));
+
+    if(matchMedia('(hover:hover)').matches){
+      root.addEventListener('mouseenter',()=>ready&&setTarget(0));
+      root.addEventListener('mouseleave',()=>{ready&&setTarget(1); m.x=m.y=0;});
+      root.addEventListener('mousemove',e=>{const r=root.getBoundingClientRect(); m.x=((e.clientX-r.left)/r.width-.5)*2; m.y=((e.clientY-r.top)/r.height-.5)*2;});
+    }
+    root.addEventListener('click',()=>ready&&setTarget(target===1?0:1));
+  })();
+  </script>
+</body>
+</html>
