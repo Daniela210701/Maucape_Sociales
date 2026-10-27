@@ -164,8 +164,8 @@ content:
         label: Instagram (sin @)
         type: string
       - name: facebook
-        label: Facebook (enlace)
+        label: Facebook (solo el usuario, ej. maucapesociales)
         type: string
       - name: tiktok
-        label: TikTok (usuario o enlace)
+        label: TikTok (solo el usuario, sin @)
         type: string
