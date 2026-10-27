@@ -1,0 +1,171 @@
+# Configuración de Pages CMS (https://app.pagescms.org)
+# Se entra con la cuenta de GitHub y se editan los archivos de content/.
+# Las fotos que se suben quedan en la carpeta img/.
+media:
+  input: img
+  output: /img
+  rename: safe
+
+content:
+  - name: carrusel
+    label: Fotos de inicio
+    type: file
+    path: content/carrusel.json
+    fields:
+      - name: fotos
+        label: Fotos (pasan solas al abrir la página)
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{index}. {titulo}"
+        fields:
+          - name: imagen
+            label: Foto
+            type: image
+          - name: titulo
+            label: Texto debajo de la foto
+            type: string
+
+  - name: portafolio
+    label: Portafolio
+    type: file
+    path: content/portafolio.json
+    fields:
+      - name: bodas
+        label: Bodas
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{novios} · {lugar}"
+        fields:
+          - name: novios
+            label: Novios
+            type: string
+          - name: lugar
+            label: Lugar
+            type: string
+          - name: fecha
+            label: Fecha (ej. 04 — 2026)
+            type: string
+          - name: texto
+            label: Texto
+            type: text
+          - name: blancoYNegro
+            label: Mostrar en blanco y negro
+            type: boolean
+          - name: fotos
+            label: Fotos de la galería (la primera es la portada)
+            type: image
+            list: true
+
+  - name: paquetes
+    label: Paquetes
+    type: file
+    path: content/paquetes.json
+    fields:
+      - name: paquetes
+        label: Paquetes
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{nombre} · ${precio}"
+        fields:
+          - name: nombre
+            label: Nombre
+            type: string
+          - name: etiqueta
+            label: Etiqueta (ej. Colección 1)
+            type: string
+          - name: precio
+            label: Precio desde (MXN)
+            type: number
+          - name: resumen
+            label: Resumen corto (cotizador)
+            type: string
+          - name: descripcion
+            label: Descripción
+            type: text
+          - name: incluye
+            label: Qué incluye
+            type: string
+            list: true
+          - name: id
+            label: Clave interna (no cambiar)
+            type: string
+          - name: extrasIncluidos
+            label: Extras incluidos (claves de servicios)
+            type: string
+            list: true
+
+  - name: extras
+    label: Extras del cotizador
+    type: file
+    path: content/extras.json
+    fields:
+      - name: categorias
+        label: Categorías
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{nombre}"
+        fields:
+          - name: nombre
+            label: Nombre de la categoría
+            type: string
+          - name: servicios
+            label: Servicios
+            type: object
+            list:
+              collapsible:
+                collapsed: true
+                summary: "{nombre}"
+            fields:
+              - name: nombre
+                label: Nombre
+                type: string
+              - name: info
+                label: Detalle
+                type: string
+              - name: precio
+                label: Precio (0 = a cotizar)
+                type: number
+              - name: porHora
+                label: Se cobra por hora / cantidad
+                type: boolean
+              - name: maximo
+                label: Cantidad máxima
+                type: number
+              - name: id
+                label: Clave interna (no cambiar)
+                type: string
+
+  - name: contacto
+    label: Contacto
+    type: file
+    path: content/contacto.json
+    fields:
+      - name: whatsapp
+        label: WhatsApp (solo números, con 521)
+        type: string
+      - name: telefono
+        label: Teléfono como se muestra
+        type: string
+      - name: llamar
+        label: Teléfono para llamar (+52…)
+        type: string
+      - name: correo
+        label: Correo
+        type: string
+      - name: instagram
+        label: Instagram (sin @)
+        type: string
+      - name: facebook
+        label: Facebook (enlace)
+        type: string
+      - name: tiktok
+        label: TikTok (usuario o enlace)
+        type: string

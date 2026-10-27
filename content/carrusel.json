@@ -1,0 +1,28 @@
+{
+  "fotos": [
+    {
+      "titulo": "Sofía & Nicolás — Hacienda San Antonio, Colima",
+      "imagen": "https://images.unsplash.com/photo-1519741497674-611481863552"
+    },
+    {
+      "titulo": "Elena & Julián — Villa Balbiano, Lago de Como",
+      "imagen": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc"
+    },
+    {
+      "titulo": "Camila & Mateo — Santo Domingo, Oaxaca",
+      "imagen": "https://images.unsplash.com/photo-1583939003579-730e3918a45a"
+    },
+    {
+      "titulo": "Valentina & Arthur — Château de Tourreau, Provenza",
+      "imagen": "https://images.unsplash.com/photo-1544077960-604201fe74bc"
+    },
+    {
+      "titulo": "Estudio de Velo & Seda — Cobertura Editorial",
+      "imagen": "https://images.unsplash.com/photo-1537633552985-df8429e8048b"
+    },
+    {
+      "titulo": "Clara & Sebastián — San Miguel de Allende",
+      "imagen": "https://images.unsplash.com/photo-1469371670807-013ccf25f16a"
+    }
+  ]
+}

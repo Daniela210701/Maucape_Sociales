@@ -1,0 +1,89 @@
+{
+  "bodas": [
+    {
+      "novios": "Sofía & Nicolás",
+      "lugar": "Hacienda San Antonio, Colima",
+      "fecha": "04 — 2026",
+      "texto": "Una tarde de campo, flores silvestres y una promesa dicha en voz baja. Todo lo que pasó entre miradas quedó guardado.",
+      "blancoYNegro": false,
+      "fotos": [
+        "https://images.unsplash.com/photo-1519741497674-611481863552",
+        "https://images.unsplash.com/photo-1529636798458-92182e662485",
+        "https://images.unsplash.com/photo-1607190074257-dd4b7af0309f",
+        "https://images.unsplash.com/photo-1606216794074-735e91aa2c92",
+        "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8",
+        "https://images.unsplash.com/photo-1523438885200-e635ba2c371e",
+        "https://images.unsplash.com/photo-1606490194859-07c18c9f0968",
+        "https://images.unsplash.com/photo-1527529482837-4698179dc6ce"
+      ]
+    },
+    {
+      "novios": "Valeria & Diego",
+      "lugar": "San Miguel de Allende, Guanajuato",
+      "fecha": "11 — 2025",
+      "texto": "Calles de piedra, campanas al atardecer y una fiesta que nadie quería que terminara.",
+      "blancoYNegro": false,
+      "fotos": [
+        "https://images.unsplash.com/photo-1532712938310-34cb3982ef74",
+        "https://images.unsplash.com/photo-1595407753234-0882f1e77954",
+        "https://images.unsplash.com/photo-1591604466107-ec97de577aff",
+        "https://images.unsplash.com/photo-1606800052052-a08af7148866",
+        "https://images.unsplash.com/photo-1502635385003-ee1e6a1a742d",
+        "https://images.unsplash.com/photo-1596457221755-b96bc3a6df18",
+        "https://images.unsplash.com/photo-1714972383570-44ddc9738355",
+        "https://images.unsplash.com/photo-1591604442449-ecc9943efabf"
+      ]
+    },
+    {
+      "novios": "Renata & Iván",
+      "lugar": "Mérida, Yucatán",
+      "fecha": "03 — 2025",
+      "texto": "Una hacienda antigua, luz dorada entre los muros y el abrazo más largo de la noche.",
+      "blancoYNegro": false,
+      "fotos": [
+        "https://images.unsplash.com/photo-1583939003579-730e3918a45a",
+        "https://images.unsplash.com/photo-1550784718-990c6de52adf",
+        "https://images.unsplash.com/photo-1670529776180-60e4132ab90c",
+        "https://images.unsplash.com/photo-1519225421980-715cb0215aed",
+        "https://images.unsplash.com/photo-1648154164366-d067faecdc51",
+        "https://images.unsplash.com/photo-1545232979-8bf68ee9b1af",
+        "https://images.unsplash.com/photo-1606216836537-eea72a939072",
+        "https://images.unsplash.com/photo-1680695779444-24fc71296e66"
+      ]
+    },
+    {
+      "novios": "Camila & Andrés",
+      "lugar": "Valle de Bravo, Estado de México",
+      "fecha": "09 — 2024",
+      "texto": "Entre el bosque y el lago, una boda íntima donde cada detalle se sintió como en casa.",
+      "blancoYNegro": false,
+      "fotos": [
+        "https://images.unsplash.com/photo-1606216794079-73f85bbd57d5",
+        "https://images.unsplash.com/photo-1507915977619-6ccfe8003ae6",
+        "https://images.unsplash.com/photo-1505944357431-27579db47558",
+        "https://images.unsplash.com/photo-1631225893179-4d6e349189c2",
+        "https://images.unsplash.com/photo-1606490208247-b65be3d94cd1",
+        "https://images.unsplash.com/photo-1469371670807-013ccf25f16a",
+        "https://images.unsplash.com/photo-1546032996-6dfacbacbf3f",
+        "https://images.unsplash.com/photo-1524824267900-2fa9cbf7a506"
+      ]
+    },
+    {
+      "novios": "Lucía & Emilio",
+      "lugar": "Ciudad de México",
+      "fecha": "02 — 2024",
+      "texto": "Una ceremonia en blanco y negro, sin poses: solo dos personas que ya se conocían de toda la vida.",
+      "blancoYNegro": true,
+      "fotos": [
+        "https://images.unsplash.com/photo-1460978812857-470ed1c77af0",
+        "https://images.unsplash.com/photo-1520854221256-17451cc331bf",
+        "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6",
+        "https://images.unsplash.com/photo-1588849538263-fbc2b7b8965f",
+        "https://images.unsplash.com/photo-1542598688-76ad90c5b01e",
+        "https://images.unsplash.com/photo-1723832347953-83c28e2d4dd2",
+        "https://images.unsplash.com/photo-1548313093-370cf4ba3892",
+        "https://images.unsplash.com/photo-1583939411023-14783179e581"
+      ]
+    }
+  ]
+}

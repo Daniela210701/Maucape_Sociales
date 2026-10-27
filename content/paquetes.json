@@ -1,0 +1,61 @@
+{
+  "paquetes": [
+    {
+      "id": "essential",
+      "nombre": "Essential",
+      "etiqueta": "Colección 1",
+      "descripcion": "Foto y video de su boda, con photobook y USB personalizados.",
+      "precio": 15500,
+      "resumen": "Foto + video · 8 h",
+      "incluye": [
+        "8 horas de servicio el día de la boda",
+        "1 fotógrafo + 1 videógrafo + 1 staff de apoyo",
+        "Sesión especial de novios el día de la boda",
+        "Photobook impreso de 25 a 30 páginas, pasta dura personalizada",
+        "Caja personalizada con memoria USB (material en alta resolución)",
+        "Cobertura fotográfica editada + video de la boda"
+      ],
+      "extrasIncluidos": []
+    },
+    {
+      "id": "pro",
+      "nombre": "Pro",
+      "etiqueta": "Colección 2",
+      "descripcion": "Suma una sesión pre-boda o post-boda y un marco con su foto favorita.",
+      "precio": 19500,
+      "resumen": "Foto + video · 8 h + sesión",
+      "incluye": [
+        "8 horas de servicio el día de la boda",
+        "1 fotógrafo + 1 videógrafo + 1 staff de apoyo",
+        "1 sesión a elegir: pre-boda (casual) o post-boda (trash the dress)",
+        "Sesión especial de novios el día de la boda",
+        "1 marco mediano con fotografía a elección",
+        "Photobook impreso de 25 a 30 páginas, pasta dura personalizada",
+        "Caja personalizada con memoria USB (material en alta resolución)",
+        "Cobertura fotográfica editada + video de la boda"
+      ],
+      "extrasIncluidos": []
+    },
+    {
+      "id": "premium",
+      "nombre": "Premium",
+      "etiqueta": "Colección 3",
+      "descripcion": "La experiencia completa: getting ready, pre-boda y post-boda.",
+      "precio": 23000,
+      "resumen": "Foto + video · 8 h + 2 sesiones",
+      "incluye": [
+        "8 horas de servicio el día de la boda, incluye arreglo de la novia (getting ready)",
+        "1 fotógrafo + 1 videógrafo + 1 staff de apoyo",
+        "Incluye ambas sesiones: pre-boda (casual) y post-boda (trash the dress)",
+        "Sesión especial de novios el día de la boda",
+        "1 marco grande o 2 marcos medianos con fotografía a elección",
+        "Photobook impreso de 25 a 30 páginas, pasta dura personalizada",
+        "Caja personalizada con memoria USB (material en alta resolución)",
+        "Cobertura fotográfica editada + video de la boda"
+      ],
+      "extrasIncluidos": [
+        "getting"
+      ]
+    }
+  ]
+}

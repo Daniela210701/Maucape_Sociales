@@ -1,0 +1,86 @@
+{
+  "categorias": [
+    {
+      "nombre": "Servicios de cobertura",
+      "servicios": [
+        {
+          "id": "getting",
+          "nombre": "Sesión getting ready",
+          "info": "Cobertura del arreglo de la novia (Colección 1 y 2)",
+          "precio": 0,
+          "porHora": false,
+          "maximo": 1
+        },
+        {
+          "id": "hora",
+          "nombre": "Hora extra de servicio",
+          "info": "Hora adicional de foto y video el día de la boda",
+          "precio": 0,
+          "porHora": true,
+          "maximo": 6
+        },
+        {
+          "id": "dron",
+          "nombre": "Cobertura aérea con dron",
+          "info": "Tomas y video aéreo panorámico de la locación y el evento",
+          "precio": 0,
+          "porHora": false,
+          "maximo": 1
+        },
+        {
+          "id": "persona2",
+          "nombre": "Segundo fotógrafo o videógrafo",
+          "info": "Personal adicional para bodas de más de 150 invitados",
+          "precio": 0,
+          "porHora": false,
+          "maximo": 1
+        },
+        {
+          "id": "civil",
+          "nombre": "Boda civil o evento previo",
+          "info": "Cobertura de eventos en días distintos a la boda",
+          "precio": 0,
+          "porHora": false,
+          "maximo": 1
+        },
+        {
+          "id": "estudio",
+          "nombre": "Sesión en estudio profesional",
+          "info": "Retratos con iluminación y fondos controlados",
+          "precio": 0,
+          "porHora": false,
+          "maximo": 1
+        }
+      ]
+    },
+    {
+      "nombre": "Instalaciones y entretenimiento",
+      "servicios": [
+        {
+          "id": "c360",
+          "nombre": "Plataforma video 360°",
+          "info": "Video dinámico en alta velocidad, descarga inmediata por QR",
+          "precio": 0,
+          "porHora": false,
+          "maximo": 1
+        },
+        {
+          "id": "booth",
+          "nombre": "Cabina fotográfica (photo booth)",
+          "info": "Impresión instantánea de fotos divertidas durante la fiesta",
+          "precio": 0,
+          "porHora": false,
+          "maximo": 1
+        },
+        {
+          "id": "glam",
+          "nombre": "Glam booth / live studio",
+          "info": "Set profesional con luz de estudio e impresión al instante 4×6\"",
+          "precio": 0,
+          "porHora": false,
+          "maximo": 1
+        }
+      ]
+    }
+  ]
+}
