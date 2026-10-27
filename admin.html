@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel · MAUCAPESTUDIO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600&family=Saira+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dark:#0e0e10; --ivory:#fcfcf9; --surface:#f5f3ec; --border:#e8e5dc;
+    --muted:#6c6962; --gold:#c5a059; --card:#fff; --danger:#a33a2c; --ok:#2f6b46;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--ivory);color:var(--dark);font:300 15px/1.55 'Saira',system-ui,sans-serif}
+  h1,h2,h3,.cond{font-family:'Saira Condensed','Arial Narrow',sans-serif;font-weight:600;letter-spacing:.02em;margin:0}
+  .up{text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:500}
+  a{color:var(--dark)}
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  /* ---------- Barra superior ---------- */
+  .top{position:sticky;top:0;z-index:20;background:rgba(252,252,249,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+  .top-in{max-width:1180px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .brand{display:flex;flex-direction:column;line-height:1.05;margin-right:auto}
+  .brand b{font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:22px;letter-spacing:.08em}
+  .brand span{color:var(--muted)}
+  .status{color:var(--muted);font-size:13px;min-height:20px}
+  .status.dirty{color:var(--gold)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border:1px solid var(--dark);background:var(--dark);color:#fff;text-decoration:none;text-transform:uppercase;letter-spacing:.14em;font-size:11px;font-weight:500;white-space:nowrap;transition:background .2s,color .2s}
+  .btn:hover{background:transparent;color:var(--dark)}
+  .btn.ghost{background:transparent;color:var(--dark);border-color:var(--border)}
+  .btn.ghost:hover{border-color:var(--dark)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn.sm{min-height:36px;padding:0 12px;font-size:10px}
+  .tabs{max-width:1180px;margin:0 auto;padding:0 20px;display:flex;gap:4px;overflow-x:auto}
+  .tab{border:0;background:none;padding:12px 14px;border-bottom:2px solid transparent;white-space:nowrap;color:var(--muted)}
+  .tab[aria-selected="true"]{color:var(--dark);border-bottom-color:var(--dark)}
+
+  main{max-width:1180px;margin:0 auto;padding:28px 20px 80px}
+  .intro{color:var(--muted);max-width:720px;margin:6px 0 24px}
+  .panel{display:none}
+  .panel.on{display:block}
+
+  /* ---------- Tarjetas ---------- */
+  .card{background:var(--card);border:1px solid var(--border);padding:20px;margin-bottom:18px;position:relative}
+  .card-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .card-head h3{font-size:20px;margin-right:auto}
+  .num{color:var(--gold);font-family:'Saira Condensed',sans-serif;font-weight:600;font-size:14px;letter-spacing:.1em}
+  .tools{display:flex;gap:4px}
+  .ic{width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--border);background:#fff}
+  .ic:hover{border-color:var(--dark)}
+  .ic.del:hover{border-color:var(--danger);color:var(--danger)}
+  .ic svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px}
+  .grid .full{grid-column:1/-1}
+  label.f{display:flex;flex-direction:column;gap:5px}
+  label.f > span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500}
+  input[type=text],input[type=number],input[type=url],input[type=password],textarea,select{width:100%;border:1px solid var(--border);background:var(--ivory);padding:10px 12px;min-height:44px}
+  textarea{min-height:90px;resize:vertical}
+  input:focus,textarea:focus{border-color:var(--dark);outline:none}
+  .check{display:flex;align-items:center;gap:10px;min-height:44px}
+  .check input{width:18px;height:18px;accent-color:var(--dark)}
+  .hint{font-size:12px;color:var(--muted);margin:4px 0 0}
+
+  /* ---------- Fotos ---------- */
+  .photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+  .ph{border:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column}
+  .ph-img{position:relative;aspect-ratio:4/5;overflow:hidden;background:#ebe7dc}
+  .ph-img img{width:100%;height:100%;object-fit:cover;display:block}
+  .ph-img .badge{position:absolute;left:8px;top:8px;background:var(--dark);color:#fff;font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:3px 7px}
+  .ph-img .busy{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(252,252,249,.85);font-size:12px;color:var(--muted)}
+  .ph-bar{display:flex;gap:2px;padding:6px;flex-wrap:wrap}
+  .ph-bar .ic{width:32px;height:32px}
+  .ph-bar .grow{flex:1;min-width:0;font-size:10px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--border);background:#fff;min-height:32px}
+  .ph-bar .grow:hover{border-color:var(--dark)}
+  .add-ph{border:1px dashed #cfc9ba;background:transparent;aspect-ratio:4/5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--muted);min-height:44px}
+  .add-ph:hover{border-color:var(--dark);color:var(--dark)}
+  .add-ph svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.4}
+  .slide{display:grid;grid-template-columns:180px 1fr;gap:16px;align-items:start}
+  .bn img{filter:grayscale(1)}
+
+  .add-card{width:100%;border:1px dashed #cfc9ba;background:transparent;min-height:64px;color:var(--muted);text-transform:uppercase;letter-spacing:.14em;font-size:11px}
+  .add-card:hover{border-color:var(--dark);color:var(--dark)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{display:flex;align-items:center;gap:8px;border:1px solid var(--border);padding:6px 10px;min-height:40px;background:var(--ivory);font-size:13px}
+  .chip input{accent-color:var(--dark)}
+
+  /* ---------- Acceso ---------- */
+  .login{max-width:560px;margin:8vh auto;padding:0 20px}
+  .login .card{padding:28px}
+  .login h1{font-size:34px;margin:6px 0 4px}
+  .login ol{padding-left:20px;color:#3a3935;margin:10px 0 18px}
+  .login ol li{margin-bottom:6px}
+  .err{color:var(--danger);font-size:13px;min-height:20px;margin:8px 0 0}
+
+  /* ---------- Aviso ---------- */
+  .toast{position:fixed;right:20px;bottom:20px;z-index:50;background:var(--dark);color:#fff;padding:12px 16px;max-width:360px;font-size:14px;transform:translateY(120%);opacity:0;transition:.3s}
+  .toast.on{transform:none;opacity:1}
+  .toast.bad{background:var(--danger)}
+
+  @media (max-width:720px){
+    .grid{grid-template-columns:1fr}
+    .slide{grid-template-columns:1fr}
+    .slide .ph{max-width:220px}
+    .top-in{gap:10px}
+    .top-in .btn{flex:1;padding:0 10px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= PANTALLA DE ACCESO ================= -->
+<section id="loginView" class="login" hidden>
+  <div class="card">
+    <span class="up" style="color:var(--gold)">MAUCAPESTUDIO</span>
+    <h1>Panel de la página</h1>
+    <p class="intro" style="margin:0 0 6px">Desde aquí cambias las fotos del inicio, las bodas del portafolio, los paquetes y los datos de contacto. Los cambios se guardan en el repositorio de GitHub de la página.</p>
+    <details>
+      <summary class="up" style="cursor:pointer;margin:10px 0">¿Cómo obtengo mi clave?</summary>
+      <ol>
+        <li>Entra a <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → Fine-grained token</a> con la cuenta dueña del repositorio.</li>
+        <li>En <b>Repository access</b> elige <b>Only select repositories</b> y selecciona <b>Maucape_Sociales</b>.</li>
+        <li>En <b>Permissions → Contents</b> elige <b>Read and write</b>.</li>
+        <li>Crea la clave, cópiala y pégala aquí abajo.</li>
+      </ol>
+    </details>
+    <form id="loginForm" class="grid" style="grid-template-columns:1fr">
+      <label class="f"><span>Clave de GitHub</span><input id="lgToken" type="password" autocomplete="off" required placeholder="github_pat_…"></label>
+      <label class="f"><span>Repositorio</span><input id="lgRepo" type="text" required></label>
+      <label class="f"><span>Rama</span><input id="lgBranch" type="text" required></label>
+      <label class="check"><input id="lgRemember" type="checkbox" checked><span>Recordar en este equipo</span></label>
+      <button class="btn" type="submit" id="lgBtn">Entrar</button>
+      <p class="err" id="lgErr" role="alert"></p>
+    </form>
+  </div>
+</section>
+
+<!-- ================= PANEL ================= -->
+<div id="appView" hidden>
+  <header class="top">
+    <div class="top-in">
+      <div class="brand"><b>MAUCAPESTUDIO</b><span class="up">Panel de la página</span></div>
+      <span class="status" id="status" aria-live="polite"></span>
+      <a class="btn ghost" href="./" target="_blank" rel="noopener">Ver página</a>
+      <button class="btn" id="saveBtn" disabled>Guardar cambios</button>
+      <button class="btn ghost sm" id="logoutBtn" type="button">Salir</button>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Secciones">
+      <button class="tab" role="tab" data-tab="carrusel" aria-selected="true">Fotos de inicio</button>
+      <button class="tab" role="tab" data-tab="portafolio" aria-selected="false">Portafolio</button>
+      <button class="tab" role="tab" data-tab="paquetes" aria-selected="false">Paquetes</button>
+      <button class="tab" role="tab" data-tab="extras" aria-selected="false">Extras del cotizador</button>
+      <button class="tab" role="tab" data-tab="contacto" aria-selected="false">Contacto</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="panel on" id="p-carrusel" role="tabpanel">
+      <h2 style="font-size:30px">Fotos de inicio</h2>
+      <p class="intro">Las fotos grandes que pasan solas al abrir la página. El texto aparece abajo de cada foto.</p>
+      <div id="carruselList"></div>
+    </section>
+
+    <section class="panel" id="p-portafolio" role="tabpanel">
+      <h2 style="font-size:30px">Portafolio</h2>
+      <p class="intro">Cada boda tiene su galería. La primera foto es la portada; usa las flechas para cambiar el orden.</p>
+      <div id="portafolioList"></div>
+    </section>
+
+    <section class="panel" id="p-paquetes" role="tabpanel">
+      <h2 style="font-size:30px">Paquetes</h2>
+      <p class="intro">Lo que se muestra en Paquetes y en el Cotizador.</p>
+      <div id="paquetesList"></div>
+    </section>
+
+    <section class="panel" id="p-extras" role="tabpanel">
+      <h2 style="font-size:30px">Extras del cotizador</h2>
+      <p class="intro">Servicios adicionales que los novios pueden sumar en el Cotizador. Precio 0 = "A cotizar".</p>
+      <div id="extrasList"></div>
+    </section>
+
+    <section class="panel" id="p-contacto" role="tabpanel">
+      <h2 style="font-size:30px">Contacto</h2>
+      <p class="intro">Datos que usan los botones de WhatsApp, llamada, correo y redes.</p>
+      <div id="contactoForm"></div>
+    </section>
+  </main>
+</div>
+
+<input type="file" id="filePick" accept="image/*" hidden>
+<input type="file" id="filePickMulti" accept="image/*" multiple hidden>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* =========================================================
+   Contenido de respaldo (el mismo que trae index.html).
+   Se usa cuando todavía no existe la carpeta content/ en GitHub.
+   ========================================================= */
+const SITE_DEFAULT = {"contacto": {"whatsapp": "5215578936152", "telefono": "+52 1 55 7893 6152", "llamar": "+525578936152", "correo": "maucapesociales@gmail.com", "instagram": "maucapesociales", "facebook": "", "tiktok": ""}, "carrusel": {"fotos": [{"titulo": "Sofía & Nicolás — Hacienda San Antonio, Colima", "imagen": "https://images.unsplash.com/photo-1519741497674-611481863552"}, {"titulo": "Elena & Julián — Villa Balbiano, Lago de Como", "imagen": "https://images.unsplash.com/photo-1511285560929-80b456fea0bc"}, {"titulo": "Camila & Mateo — Santo Domingo, Oaxaca", "imagen": "https://images.unsplash.com/photo-1583939003579-730e3918a45a"}, {"titulo": "Valentina & Arthur — Château de Tourreau, Provenza", "imagen": "https://images.unsplash.com/photo-1544077960-604201fe74bc"}, {"titulo": "Estudio de Velo & Seda — Cobertura Editorial", "imagen": "https://images.unsplash.com/photo-1537633552985-df8429e8048b"}, {"titulo": "Clara & Sebastián — San Miguel de Allende", "imagen": "https://images.unsplash.com/photo-1469371670807-013ccf25f16a"}]}, "portafolio": {"bodas": [{"novios": "Sofía & Nicolás", "lugar": "Hacienda San Antonio, Colima", "fecha": "04 — 2026", "texto": "Una tarde de campo, flores silvestres y una promesa dicha en voz baja. Todo lo que pasó entre miradas quedó guardado.", "blancoYNegro": false, "fotos": ["https://images.unsplash.com/photo-1519741497674-611481863552", "https://images.unsplash.com/photo-1529636798458-92182e662485", "https://images.unsplash.com/photo-1607190074257-dd4b7af0309f", "https://images.unsplash.com/photo-1606216794074-735e91aa2c92", "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8", "https://images.unsplash.com/photo-1523438885200-e635ba2c371e", "https://images.unsplash.com/photo-1606490194859-07c18c9f0968", "https://images.unsplash.com/photo-1527529482837-4698179dc6ce"]}, {"novios": "Valeria & Diego", "lugar": "San Miguel de Allende, Guanajuato", "fecha": "11 — 2025", "texto": "Calles de piedra, campanas al atardecer y una fiesta que nadie quería que terminara.", "blancoYNegro": false, "fotos": ["https://images.unsplash.com/photo-1532712938310-34cb3982ef74", "https://images.unsplash.com/photo-1595407753234-0882f1e77954", "https://images.unsplash.com/photo-1591604466107-ec97de577aff", "https://images.unsplash.com/photo-1606800052052-a08af7148866", "https://images.unsplash.com/photo-1502635385003-ee1e6a1a742d", "https://images.unsplash.com/photo-1596457221755-b96bc3a6df18", "https://images.unsplash.com/photo-1714972383570-44ddc9738355", "https://images.unsplash.com/photo-1591604442449-ecc9943efabf"]}, {"novios": "Renata & Iván", "lugar": "Mérida, Yucatán", "fecha": "03 — 2025", "texto": "Una hacienda antigua, luz dorada entre los muros y el abrazo más largo de la noche.", "blancoYNegro": false, "fotos": ["https://images.unsplash.com/photo-1583939003579-730e3918a45a", "https://images.unsplash.com/photo-1550784718-990c6de52adf", "https://images.unsplash.com/photo-1670529776180-60e4132ab90c", "https://images.unsplash.com/photo-1519225421980-715cb0215aed", "https://images.unsplash.com/photo-1648154164366-d067faecdc51", "https://images.unsplash.com/photo-1545232979-8bf68ee9b1af", "https://images.unsplash.com/photo-1606216836537-eea72a939072", "https://images.unsplash.com/photo-1680695779444-24fc71296e66"]}, {"novios": "Camila & Andrés", "lugar": "Valle de Bravo, Estado de México", "fecha": "09 — 2024", "texto": "Entre el bosque y el lago, una boda íntima donde cada detalle se sintió como en casa.", "blancoYNegro": false, "fotos": ["https://images.unsplash.com/photo-1606216794079-73f85bbd57d5", "https://images.unsplash.com/photo-1507915977619-6ccfe8003ae6", "https://images.unsplash.com/photo-1505944357431-27579db47558", "https://images.unsplash.com/photo-1631225893179-4d6e349189c2", "https://images.unsplash.com/photo-1606490208247-b65be3d94cd1", "https://images.unsplash.com/photo-1469371670807-013ccf25f16a", "https://images.unsplash.com/photo-1546032996-6dfacbacbf3f", "https://images.unsplash.com/photo-1524824267900-2fa9cbf7a506"]}, {"novios": "Lucía & Emilio", "lugar": "Ciudad de México", "fecha": "02 — 2024", "texto": "Una ceremonia en blanco y negro, sin poses: solo dos personas que ya se conocían de toda la vida.", "blancoYNegro": true, "fotos": ["https://images.unsplash.com/photo-1460978812857-470ed1c77af0", "https://images.unsplash.com/photo-1520854221256-17451cc331bf", "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6", "https://images.unsplash.com/photo-1588849538263-fbc2b7b8965f", "https://images.unsplash.com/photo-1542598688-76ad90c5b01e", "https://images.unsplash.com/photo-1723832347953-83c28e2d4dd2", "https://images.unsplash.com/photo-1548313093-370cf4ba3892", "https://images.unsplash.com/photo-1583939411023-14783179e581"]}]}, "paquetes": {"paquetes": [{"id": "essential", "nombre": "Essential", "etiqueta": "Colección 1", "descripcion": "Foto y video de su boda, con photobook y USB personalizados.", "precio": 15500, "resumen": "Foto + video · 8 h", "incluye": ["8 horas de servicio el día de la boda", "1 fotógrafo + 1 videógrafo + 1 staff de apoyo", "Sesión especial de novios el día de la boda", "Photobook impreso de 25 a 30 páginas, pasta dura personalizada", "Caja personalizada con memoria USB (material en alta resolución)", "Cobertura fotográfica editada + video de la boda"], "extrasIncluidos": []}, {"id": "pro", "nombre": "Pro", "etiqueta": "Colección 2", "descripcion": "Suma una sesión pre-boda o post-boda y un marco con su foto favorita.", "precio": 19500, "resumen": "Foto + video · 8 h + sesión", "incluye": ["8 horas de servicio el día de la boda", "1 fotógrafo + 1 videógrafo + 1 staff de apoyo", "1 sesión a elegir: pre-boda (casual) o post-boda (trash the dress)", "Sesión especial de novios el día de la boda", "1 marco mediano con fotografía a elección", "Photobook impreso de 25 a 30 páginas, pasta dura personalizada", "Caja personalizada con memoria USB (material en alta resolución)", "Cobertura fotográfica editada + video de la boda"], "extrasIncluidos": []}, {"id": "premium", "nombre": "Premium", "etiqueta": "Colección 3", "descripcion": "La experiencia completa: getting ready, pre-boda y post-boda.", "precio": 23000, "resumen": "Foto + video · 8 h + 2 sesiones", "incluye": ["8 horas de servicio el día de la boda, incluye arreglo de la novia (getting ready)", "1 fotógrafo + 1 videógrafo + 1 staff de apoyo", "Incluye ambas sesiones: pre-boda (casual) y post-boda (trash the dress)", "Sesión especial de novios el día de la boda", "1 marco grande o 2 marcos medianos con fotografía a elección", "Photobook impreso de 25 a 30 páginas, pasta dura personalizada", "Caja personalizada con memoria USB (material en alta resolución)", "Cobertura fotográfica editada + video de la boda"], "extrasIncluidos": ["getting"]}]}, "extras": {"categorias": [{"nombre": "Servicios de cobertura", "servicios": [{"id": "getting", "nombre": "Sesión getting ready", "info": "Cobertura del arreglo de la novia (Colección 1 y 2)", "precio": 0, "porHora": false, "maximo": 1}, {"id": "hora", "nombre": "Hora extra de servicio", "info": "Hora adicional de foto y video el día de la boda", "precio": 0, "porHora": true, "maximo": 6}, {"id": "dron", "nombre": "Cobertura aérea con dron", "info": "Tomas y video aéreo panorámico de la locación y el evento", "precio": 0, "porHora": false, "maximo": 1}, {"id": "persona2", "nombre": "Segundo fotógrafo o videógrafo", "info": "Personal adicional para bodas de más de 150 invitados", "precio": 0, "porHora": false, "maximo": 1}, {"id": "civil", "nombre": "Boda civil o evento previo", "info": "Cobertura de eventos en días distintos a la boda", "precio": 0, "porHora": false, "maximo": 1}, {"id": "estudio", "nombre": "Sesión en estudio profesional", "info": "Retratos con iluminación y fondos controlados", "precio": 0, "porHora": false, "maximo": 1}]}, {"nombre": "Instalaciones y entretenimiento", "servicios": [{"id": "c360", "nombre": "Plataforma video 360°", "info": "Video dinámico en alta velocidad, descarga inmediata por QR", "precio": 0, "porHora": false, "maximo": 1}, {"id": "booth", "nombre": "Cabina fotográfica (photo booth)", "info": "Impresión instantánea de fotos divertidas durante la fiesta", "precio": 0, "porHora": false, "maximo": 1}, {"id": "glam", "nombre": "Glam booth / live studio", "info": "Set profesional con luz de estudio e impresión al instante 4×6\"", "precio": 0, "porHora": false, "maximo": 1}]}]}};
+const SECTIONS = ['carrusel','portafolio','paquetes','extras','contacto'];
+const DEFAULT_CFG = { repo: 'Daniela210701/Maucape_Sociales', branch: 'main' };
+
+/* ---------- utilidades ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clone = o => JSON.parse(JSON.stringify(o));
+const store = {
+  get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } },
+  set(k,v){ try { localStorage.setItem(k,v); } catch(e){} },
+  del(k){ try { localStorage.removeItem(k); } catch(e){} }
+};
+const mcImg = (src, w) => /images\.unsplash\.com/.test(src||'') ? String(src).split('?')[0] + '?auto=format&fit=crop&w=' + w + '&q=70' : src;
+const ICON = {
+  up:'<svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>',
+  down:'<svg viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>',
+  left:'<svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>',
+  right:'<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>',
+  del:'<svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>',
+  plus:'<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
+  link:'<svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1"/></svg>'
+};
+
+let cfg = null;              // { token, repo, branch }
+let data = clone(SITE_DEFAULT);
+const shas = {};             // sha de cada content/*.json en GitHub
+const dirty = new Set();     // secciones con cambios sin guardar
+const previews = {};         // vista previa local de fotos recién subidas
+let uploading = 0;
+
+function toast(msg, bad){
+  const t = $('#toast'); t.textContent = msg; t.className = 'toast on' + (bad ? ' bad' : '');
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.className = 'toast', 3800);
+}
+function setStatus(){
+  const s = $('#status');
+  if (uploading) { s.textContent = 'Subiendo ' + uploading + ' foto(s)…'; s.className = 'status dirty'; }
+  else if (dirty.size) { s.textContent = 'Cambios sin guardar'; s.className = 'status dirty'; }
+  else { s.textContent = 'Todo guardado'; s.className = 'status'; }
+  $('#saveBtn').disabled = !dirty.size || uploading > 0;
+}
+function touch(section){ dirty.add(section); setStatus(); }
+
+/* acceso a datos por ruta "portafolio.bodas.0.fotos.2" */
+function getP(path){ return path.split('.').reduce((o,k) => o == null ? o : o[k], data); }
+function setP(path, val){
+  const ks = path.split('.'); const last = ks.pop();
+  const o = ks.reduce((o,k) => o[k], data); o[last] = val;
+}
+
+/* =========================================================
+   GitHub
+   ========================================================= */
+const b64enc = str => btoa(unescape(encodeURIComponent(str)));
+const b64dec = b64 => decodeURIComponent(escape(atob(b64.replace(/\s/g,''))));
+
+async function gh(path, opts = {}){
+  const r = await fetch('https://api.github.com/repos/' + cfg.repo + path, {
+    ...opts,
+    headers: { 'Accept':'application/vnd.github+json', 'Authorization':'Bearer ' + cfg.token, 'X-GitHub-Api-Version':'2022-11-28', ...(opts.headers||{}) }
+  });
+  return r;
+}
+async function getFile(path){
+  const r = await gh('/contents/' + path + '?ref=' + encodeURIComponent(cfg.branch), { cache:'no-store' });
+  if (r.status === 404) return null;
+  if (!r.ok) throw new Error('No se pudo leer ' + path + ' (' + r.status + ')');
+  const j = await r.json();
+  return { sha: j.sha, text: b64dec(j.content || '') };
+}
+async function putFile(path, b64, message, sha){
+  const body = { message, content: b64, branch: cfg.branch };
+  if (sha) body.sha = sha;
+  const r = await gh('/contents/' + path, { method:'PUT', body: JSON.stringify(body) });
+  if (!r.ok) {
+    let m = ''; try { m = (await r.json()).message || ''; } catch(e){}
+    throw new Error('No se pudo guardar ' + path + ' (' + r.status + (m ? ': ' + m : '') + ')');
+  }
+  return (await r.json()).content.sha;
+}
+/* las escrituras a GitHub van una por una para no chocar entre sí */
+let queue = Promise.resolve();
+const enqueue = fn => (queue = queue.then(fn, fn));
+
+async function checkAccess(){
+  const r = await gh('');
+  if (r.status === 401) throw new Error('La clave no es válida o ya venció.');
+  if (r.status === 404) throw new Error('No encuentro el repositorio, o la clave no tiene acceso a él.');
+  if (!r.ok) throw new Error('GitHub respondió con un error (' + r.status + ').');
+  const j = await r.json();
+  if (j.permissions && !j.permissions.push) throw new Error('La clave puede leer pero no escribir. Dale permiso "Contents: Read and write".');
+}
+async function loadContent(){
+  for (const s of SECTIONS) {
+    const f = await getFile('content/' + s + '.json');
+    if (f) { shas[s] = f.sha; try { data[s] = Object.assign({}, SITE_DEFAULT[s], JSON.parse(f.text)); } catch(e) { console.warn('JSON inválido en', s); } }
+    else { delete shas[s]; dirty.add(s); }   // aún no existe: se creará al guardar
+  }
+}
+
+/* =========================================================
+   Fotos: se reducen en el navegador y se suben a img/
+   ========================================================= */
+async function shrink(file){
+  const MAX = 2200;
+  const bmp = await createImageBitmap(file);
+  const k = Math.min(1, MAX / Math.max(bmp.width, bmp.height));
+  const c = document.createElement('canvas');
+  c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+  c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+  const blob = await new Promise(res => c.toBlob(res, 'image/jpeg', 0.84));
+  const url = await new Promise(res => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.readAsDataURL(blob); });
+  return { b64: url.split(',')[1], preview: URL.createObjectURL(blob) };
+}
+function slug(s){ return String(s||'foto').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40) || 'foto'; }
+
+async function uploadImage(file, section){
+  uploading++; setStatus();
+  try {
+    const { b64, preview } = await shrink(file);
+    const path = 'img/' + section + '-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,6) + '-' + slug(file.name.replace(/\.[^.]+$/,'')) + '.jpg';
+    await enqueue(() => putFile(path, b64, 'Subir foto (' + section + ') desde el panel'));
+    previews[path] = preview;
+    return path;
+  } finally { uploading--; setStatus(); }
+}
+function pickFiles(multi){
+  return new Promise(res => {
+    const inp = multi ? $('#filePickMulti') : $('#filePick');
+    inp.value = '';
+    inp.onchange = () => res([...inp.files]);
+    inp.click();
+  });
+}
+const thumb = src => previews[src] || mcImg(src, 500) || '';
+
+/* =========================================================
+   Pintar cada sección
+   ========================================================= */
+function tools(path, i, len, vertical){
+  return `<div class="tools">
+    <button class="ic" type="button" data-act="move" data-path="${path}" data-i="${i}" data-d="-1" aria-label="Mover antes" ${i===0?'disabled':''}>${vertical?ICON.up:ICON.left}</button>
+    <button class="ic" type="button" data-act="move" data-path="${path}" data-i="${i}" data-d="1" aria-label="Mover después" ${i===len-1?'disabled':''}>${vertical?ICON.down:ICON.right}</button>
+    <button class="ic del" type="button" data-act="del" data-path="${path}" data-i="${i}" aria-label="Eliminar">${ICON.del}</button>
+  </div>`;
+}
+function photoCard(imgPath, src, opts = {}){
+  return `<div class="ph${opts.bn?' bn':''}">
+    <div class="ph-img">${src ? `<img src="${esc(thumb(src))}" alt="" loading="lazy">` : '<div class="busy">Sin foto</div>'}${opts.badge ? `<span class="badge">${opts.badge}</span>` : ''}</div>
+    <div class="ph-bar">
+      <button class="grow" type="button" data-act="replace" data-path="${imgPath}">Cambiar</button>
+      <button class="ic" type="button" data-act="url" data-path="${imgPath}" aria-label="Pegar enlace de foto">${ICON.link}</button>
+      ${opts.list ? `
+      <button class="ic" type="button" data-act="move" data-path="${opts.list}" data-i="${opts.i}" data-d="-1" aria-label="Mover antes" ${opts.i===0?'disabled':''}>${ICON.left}</button>
+      <button class="ic" type="button" data-act="move" data-path="${opts.list}" data-i="${opts.i}" data-d="1" aria-label="Mover después" ${opts.i===opts.len-1?'disabled':''}>${ICON.right}</button>
+      <button class="ic del" type="button" data-act="del" data-path="${opts.list}" data-i="${opts.i}" aria-label="Quitar foto">${ICON.del}</button>` : ''}
+    </div>
+  </div>`;
+}
+function field(label, path, type = 'text', extra = ''){
+  const v = getP(path);
+  if (type === 'textarea') return `<label class="f ${extra}"><span>${label}</span><textarea data-bind="${path}">${esc(v)}</textarea></label>`;
+  if (type === 'lines') return `<label class="f ${extra}"><span>${label}</span><textarea data-lines="${path}" rows="6">${esc((v||[]).join('\n'))}</textarea><span class="hint">Un renglón por cada punto.</span></label>`;
+  if (type === 'check') return `<label class="check ${extra}"><input type="checkbox" data-bind="${path}" ${v?'checked':''}><span>${label}</span></label>`;
+  return `<label class="f ${extra}"><span>${label}</span><input type="${type}" data-bind="${path}" value="${esc(v)}" ${type==='number'?'min="0" step="1"':''}></label>`;
+}
+
+function renderCarrusel(){
+  const fotos = data.carrusel.fotos || (data.carrusel.fotos = []);
+  $('#carruselList').innerHTML = fotos.map((f,i) => `
+    <div class="card">
+      <div class="card-head"><span class="num">${String(i+1).padStart(2,'0')}</span><h3>${esc(f.titulo) || 'Foto sin título'}</h3>${tools('carrusel.fotos', i, fotos.length, true)}</div>
+      <div class="slide">
+        ${photoCard('carrusel.fotos.'+i+'.imagen', f.imagen)}
+        <div class="grid" style="grid-template-columns:1fr">${field('Texto debajo de la foto', 'carrusel.fotos.'+i+'.titulo')}</div>
+      </div>
+    </div>`).join('') +
+    `<button class="add-card" type="button" data-act="addSlides">+ Agregar fotos de inicio</button>`;
+}
+
+function renderPortafolio(){
+  const bodas = data.portafolio.bodas || (data.portafolio.bodas = []);
+  $('#portafolioList').innerHTML = bodas.map((b,i) => {
+    const fotos = b.fotos || (b.fotos = []);
+    const base = 'portafolio.bodas.' + i;
+    return `<div class="card">
+      <div class="card-head"><span class="num">${String(i+1).padStart(2,'0')}</span><h3>${esc(b.novios) || 'Nueva boda'}</h3>${tools('portafolio.bodas', i, bodas.length, true)}</div>
+      <div class="grid">
+        ${field('Novios', base+'.novios')}
+        ${field('Lugar', base+'.lugar')}
+        ${field('Fecha (ej. 04 — 2026)', base+'.fecha')}
+        ${field('Mostrar en blanco y negro', base+'.blancoYNegro', 'check')}
+        ${field('Texto', base+'.texto', 'textarea', 'full')}
+      </div>
+      <p class="up" style="margin:18px 0 10px;color:var(--muted)">Fotos de la galería (${fotos.length})</p>
+      <div class="photos">
+        ${fotos.map((src,k) => photoCard(base+'.fotos.'+k, src, { list: base+'.fotos', i:k, len:fotos.length, badge: k===0?'Portada':'', bn: b.blancoYNegro })).join('')}
+        <button class="add-ph" type="button" data-act="addPhotos" data-path="${base}.fotos">${ICON.plus}<span class="up">Agregar fotos</span></button>
+      </div>
+    </div>`;
+  }).join('') + `<button class="add-card" type="button" data-act="addBoda">+ Agregar boda</button>`;
+}
+
+function allServices(){
+  return (data.extras.categorias || []).flatMap(c => (c.servicios || []).map(s => ({ id: s.id, nombre: s.nombre })));
+}
+function renderPaquetes(){
+  const pk = data.paquetes.paquetes || (data.paquetes.paquetes = []);
+  const svcs = allServices();
+  $('#paquetesList').innerHTML = pk.map((p,i) => {
+    const base = 'paquetes.paquetes.' + i;
+    const inc = p.extrasIncluidos || [];
+    return `<div class="card">
+      <div class="card-head"><span class="num">${String(i+1).padStart(2,'0')}</span><h3>${esc(p.nombre) || 'Nuevo paquete'}</h3>${tools('paquetes.paquetes', i, pk.length, true)}</div>
+      <div class="grid">
+        ${field('Nombre', base+'.nombre')}
+        ${field('Etiqueta (ej. Colección 1)', base+'.etiqueta')}
+        ${field('Precio desde (MXN)', base+'.precio', 'number')}
+        ${field('Resumen corto (cotizador)', base+'.resumen')}
+        ${field('Descripción', base+'.descripcion', 'textarea', 'full')}
+        ${field('Qué incluye', base+'.incluye', 'lines', 'full')}
+      </div>
+      ${svcs.length ? `<p class="up" style="margin:16px 0 8px;color:var(--muted)">Extras que ya vienen incluidos en el cotizador</p>
+      <div class="chips">${svcs.map(s => `<label class="chip"><input type="checkbox" data-incl="${base}" value="${esc(s.id)}" ${inc.includes(s.id)?'checked':''}>${esc(s.nombre)}</label>`).join('')}</div>` : ''}
+    </div>`;
+  }).join('') + `<button class="add-card" type="button" data-act="addPaquete">+ Agregar paquete</button>`;
+}
+
+function renderExtras(){
+  const cats = data.extras.categorias || (data.extras.categorias = []);
+  $('#extrasList').innerHTML = cats.map((c,i) => {
+    const base = 'extras.categorias.' + i;
+    const sv = c.servicios || (c.servicios = []);
+    return `<div class="card">
+      <div class="card-head"><span class="num">${String(i+1).padStart(2,'0')}</span><h3>${esc(c.nombre) || 'Nueva categoría'}</h3>${tools('extras.categorias', i, cats.length, true)}</div>
+      <div class="grid" style="grid-template-columns:1fr">${field('Nombre de la categoría', base+'.nombre')}</div>
+      ${sv.map((s,k) => {
+        const b2 = base + '.servicios.' + k;
+        return `<div class="card" style="background:var(--ivory);margin:14px 0 0">
+          <div class="card-head"><h3 style="font-size:17px">${esc(s.nombre) || 'Nuevo servicio'}</h3>${tools(base+'.servicios', k, sv.length, true)}</div>
+          <div class="grid">
+            ${field('Nombre', b2+'.nombre')}
+            ${field('Precio (0 = a cotizar)', b2+'.precio', 'number')}
+            ${field('Detalle', b2+'.info', 'text', 'full')}
+            ${field('Se cobra por hora / cantidad', b2+'.porHora', 'check')}
+            ${field('Cantidad máxima', b2+'.maximo', 'number')}
+          </div>
+        </div>`;
+      }).join('')}
+      <button class="add-card" type="button" style="margin-top:14px" data-act="addServicio" data-path="${base}.servicios">+ Agregar servicio</button>
+    </div>`;
+  }).join('') + `<button class="add-card" type="button" data-act="addCategoria">+ Agregar categoría</button>`;
+}
+
+function renderContacto(){
+  $('#contactoForm').innerHTML = `<div class="card"><div class="grid">
+    ${field('WhatsApp (solo números, con 521)', 'contacto.whatsapp')}
+    ${field('Teléfono como se muestra', 'contacto.telefono')}
+    ${field('Teléfono para llamar (+52…)', 'contacto.llamar')}
+    ${field('Correo', 'contacto.correo')}
+    ${field('Instagram (sin @)', 'contacto.instagram')}
+    ${field('Facebook (enlace)', 'contacto.facebook')}
+    ${field('TikTok (usuario o enlace)', 'contacto.tiktok')}
+  </div></div>`;
+}
+
+const RENDER = { carrusel: renderCarrusel, portafolio: renderPortafolio, paquetes: renderPaquetes, extras: renderExtras, contacto: renderContacto };
+const sectionOf = path => path.split('.')[0];
+function rerender(section){ RENDER[section](); if (section === 'extras') renderPaquetes(); }
+function renderAll(){ SECTIONS.forEach(s => RENDER[s]()); setStatus(); }
+
+/* =========================================================
+   Eventos
+   ========================================================= */
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (t.dataset.bind) {
+    const p = t.dataset.bind;
+    const v = t.type === 'checkbox' ? t.checked : t.type === 'number' ? (t.value === '' ? 0 : Number(t.value)) : t.value;
+    setP(p, v); touch(sectionOf(p));
+    if (t.type === 'checkbox' && /blancoYNegro$/.test(p)) renderPortafolio();
+  } else if (t.dataset.lines) {
+    setP(t.dataset.lines, t.value.split('\n').map(x => x.trim()).filter(Boolean)); touch(sectionOf(t.dataset.lines));
+  } else if (t.dataset.incl) {
+    const p = t.dataset.incl + '.extrasIncluidos';
+    const cur = new Set(getP(p) || []); t.checked ? cur.add(t.value) : cur.delete(t.value);
+    setP(p, [...cur]); touch('paquetes');
+  }
+});
+/* el título de cada tarjeta sigue lo que se escribe (sin volver a pintar la sección) */
+document.addEventListener('input', e => {
+  const p = e.target.dataset && e.target.dataset.bind;
+  if (!p || !/\.(novios|nombre|titulo)$/.test(p)) return;
+  const h = e.target.closest('.card') && e.target.closest('.card').querySelector('.card-head h3');
+  if (h) h.textContent = e.target.value || 'Sin nombre';
+});
+
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const act = b.dataset.act, path = b.dataset.path, i = Number(b.dataset.i);
+  try {
+    if (act === 'move') {
+      const arr = getP(path), j = i + Number(b.dataset.d);
+      if (j < 0 || j >= arr.length) return;
+      [arr[i], arr[j]] = [arr[j], arr[i]]; touch(sectionOf(path)); rerender(sectionOf(path));
+    }
+    else if (act === 'del') {
+      if (!confirm('¿Seguro que quieres quitar este elemento?')) return;
+      getP(path).splice(i, 1); touch(sectionOf(path)); rerender(sectionOf(path));
+    }
+    else if (act === 'replace') {
+      const [file] = await pickFiles(false); if (!file) return;
+      const card = b.closest('.ph'); card.querySelector('.ph-img').insertAdjacentHTML('beforeend', '<div class="busy">Subiendo…</div>');
+      const url = await uploadImage(file, sectionOf(path));
+      setP(path, url); touch(sectionOf(path)); rerender(sectionOf(path));
+      toast('Foto subida. Recuerda guardar los cambios.');
+    }
+    else if (act === 'url') {
+      const v = prompt('Pega el enlace de la foto (https://…):', getP(path) || '');
+      if (v == null) return;
+      setP(path, v.trim()); touch(sectionOf(path)); rerender(sectionOf(path));
+    }
+    else if (act === 'addPhotos') {
+      const files = await pickFiles(true); if (!files.length) return;
+      toast('Subiendo ' + files.length + ' foto(s)…');
+      for (const f of files) { const url = await uploadImage(f, 'portafolio'); getP(path).push(url); renderPortafolio(); }
+      touch('portafolio'); toast('Fotos agregadas. Recuerda guardar los cambios.');
+    }
+    else if (act === 'addSlides') {
+      const files = await pickFiles(true); if (!files.length) return;
+      toast('Subiendo ' + files.length + ' foto(s)…');
+      for (const f of files) { const url = await uploadImage(f, 'carrusel'); data.carrusel.fotos.push({ titulo: '', imagen: url }); renderCarrusel(); }
+      touch('carrusel'); toast('Fotos agregadas. Escribe su texto y guarda.');
+    }
+    else if (act === 'addBoda') {
+      data.portafolio.bodas.push({ novios:'', lugar:'', fecha:'', texto:'', blancoYNegro:false, fotos:[] });
+      touch('portafolio'); renderPortafolio();
+      $('#portafolioList').lastElementChild.previousElementSibling.scrollIntoView({ behavior:'smooth' });
+    }
+    else if (act === 'addPaquete') {
+      data.paquetes.paquetes.push({ id:'pkg-' + Date.now().toString(36), nombre:'', etiqueta:'', descripcion:'', precio:0, resumen:'', incluye:[], extrasIncluidos:[] });
+      touch('paquetes'); renderPaquetes();
+    }
+    else if (act === 'addCategoria') {
+      data.extras.categorias.push({ nombre:'', servicios:[] }); touch('extras'); rerender('extras');
+    }
+    else if (act === 'addServicio') {
+      getP(path).push({ id:'ext-' + Date.now().toString(36), nombre:'', info:'', precio:0, porHora:false, maximo:1 });
+      touch('extras'); rerender('extras');
+    }
+  } catch (err) { console.error(err); toast(err.message || 'Algo salió mal.', true); setStatus(); }
+});
+
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', x === t));
+  document.querySelectorAll('.panel').forEach(p => p.classList.toggle('on', p.id === 'p-' + t.dataset.tab));
+  if (t.dataset.tab === 'paquetes') renderPaquetes();   // por si cambiaron los nombres de los extras
+  window.scrollTo({ top: 0 });
+}));
+
+$('#saveBtn').addEventListener('click', async () => {
+  const btn = $('#saveBtn'); btn.disabled = true; btn.textContent = 'Guardando…';
+  try {
+    for (const s of [...dirty]) {
+      const json = JSON.stringify(data[s], null, 2) + '\n';
+      shas[s] = await enqueue(() => putFile('content/' + s + '.json', b64enc(json), 'Actualizar ' + s + ' desde el panel', shas[s]));
+      dirty.delete(s);
+    }
+    toast('Guardado. La página se actualiza en 1 o 2 minutos.');
+  } catch (err) {
+    console.error(err);
+    toast(/409|sha/i.test(err.message) ? 'Alguien más guardó cambios. Recarga el panel e inténtalo de nuevo.' : err.message, true);
+  } finally { btn.textContent = 'Guardar cambios'; setStatus(); }
+});
+
+window.addEventListener('beforeunload', e => { if (dirty.size || uploading) { e.preventDefault(); e.returnValue = ''; } });
+
+/* =========================================================
+   Entrar / salir
+   ========================================================= */
+async function start(c, remember){
+  cfg = c;
+  await checkAccess();
+  await loadContent();
+  if (remember) store.set('mcPanel', JSON.stringify(cfg)); else store.del('mcPanel');
+  $('#loginView').hidden = true; $('#appView').hidden = false;
+  renderAll();
+}
+$('#loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = $('#lgBtn'); btn.disabled = true; btn.textContent = 'Entrando…'; $('#lgErr').textContent = '';
+  try {
+    await start({ token: $('#lgToken').value.trim(), repo: $('#lgRepo').value.trim(), branch: $('#lgBranch').value.trim() }, $('#lgRemember').checked);
+  } catch (err) { $('#lgErr').textContent = err.message || 'No se pudo entrar.'; cfg = null; }
+  finally { btn.disabled = false; btn.textContent = 'Entrar'; }
+});
+$('#logoutBtn').addEventListener('click', () => {
+  if (dirty.size && !confirm('Tienes cambios sin guardar. ¿Salir de todos modos?')) return;
+  store.del('mcPanel'); dirty.clear(); location.reload();
+});
+
+(async function init(){
+  $('#lgRepo').value = DEFAULT_CFG.repo; $('#lgBranch').value = DEFAULT_CFG.branch;
+  let saved = null; try { saved = JSON.parse(store.get('mcPanel') || 'null'); } catch(e){}
+  if (saved && saved.token) {
+    try { await start(saved, true); return; }
+    catch (err) { $('#lgErr').textContent = err.message; store.del('mcPanel'); dirty.clear(); data = clone(SITE_DEFAULT); }
+  }
+  $('#loginView').hidden = false;
+})();
+</script>
+</body>
+</html>
